@@ -76,58 +76,52 @@ button:disabled{opacity:.55;cursor:default}
 .music-btn.playing .icon-pause{display:block}
 
 body.gate-open{overflow:hidden}
-.envelope-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,var(--paper) 0%,var(--cream) 75%);transition:opacity .6s ease}
+.envelope-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--cream);transition:opacity .6s ease}
 .envelope-gate.hide{opacity:0;pointer-events:none}
-.envelope-wrap{width:min(320px,80vw);perspective:1300px;text-align:center}
+.envelope-wrap{width:min(360px,85vw);perspective:1300px;text-align:center}
 .envelope{position:relative;width:100%;aspect-ratio:3/2;transform-style:preserve-3d;cursor:pointer;outline:none}
 
-.envelope-body{position:absolute;inset:0;border-radius:2px;background:
-    repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 4px),
-    linear-gradient(160deg,#2c2018,#1d1712 55%,#241a14);
-  box-shadow:0 26px 60px rgba(20,14,10,.4),inset 0 0 0 1px rgba(181,138,74,.35)}
-.envelope-body::before{content:"";position:absolute;inset:6px;border:1px solid rgba(181,138,74,.28);pointer-events:none}
-.envelope-body::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56%;
-  background:linear-gradient(155deg,rgba(181,138,74,.16),transparent 60%);
-  clip-path:polygon(0 100%,50% 30%,100% 100%)}
+.envelope-body{position:absolute;inset:0;background:var(--brown);
+  box-shadow:0 24px 55px rgba(36,26,20,.32);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='rgba(0,0,0,.22)' stroke-width='0.6'/%3E%3Cline x1='100' y1='0' x2='0' y2='100' stroke='rgba(0,0,0,.22)' stroke-width='0.6'/%3E%3C/svg%3E");
+  background-size:100% 100%}
 
-.envelope-card{position:absolute;left:9%;right:9%;top:15%;height:74%;
-  background:linear-gradient(180deg,#fffdf8,#fbf2e3);
-  box-shadow:0 14px 30px rgba(20,14,10,.3);
-  display:flex;align-items:center;justify-content:center;
+.envelope-card{position:absolute;left:4%;right:4%;top:12%;height:80%;
+  background:#fffdf9;padding:8px 8px 26px;
+  box-shadow:0 16px 34px rgba(20,14,10,.32);
   transition:transform .9s cubic-bezier(.22,1,.36,1) .45s,opacity .5s ease;z-index:2}
-.envelope-card::before{content:"";position:absolute;inset:7px;border:1px solid rgba(181,138,74,.5)}
-.envelope-card .card-orn{color:var(--gold);font-size:17px;margin-bottom:6px;letter-spacing:.1em}
-.envelope-card .card-names{font:italic clamp(15px,4vw,19px)/1.35 Georgia,serif;color:var(--ink)}
-.envelope-card .card-names small{display:block;font-size:.62em;color:var(--gold);margin:2px 0}
-.envelope-card .card-date{margin-top:10px;font:600 9px Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--brown)}
-.envelope.opening .envelope-card{transform:translateY(-140%) scale(1.04)}
+.envelope-card img{width:100%;height:100%;object-fit:cover;display:block}
+.envelope.opening .envelope-card{transform:translateY(-118%) scale(1.03)}
 
-.envelope-flap{position:absolute;top:0;left:0;width:100%;height:54%;transform-origin:top center;backface-visibility:hidden;transition:transform .85s cubic-bezier(.6,0,.4,1);z-index:3;filter:drop-shadow(0 6px 10px rgba(20,14,10,.35))}
-.envelope-flap::before{content:"";position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 100%);
-  background:linear-gradient(160deg,#c79a52,#8a6428 55%,#c79a52)}
-.envelope-flap::after{content:"";position:absolute;inset:2px 3px 4px;clip-path:polygon(0 0,100% 0,50% 100%);
-  background:
-    repeating-linear-gradient(135deg,rgba(255,255,255,.04) 0 2px,transparent 2px 4px),
-    linear-gradient(160deg,#2c2018,#1d1712 55%,#241a14)}
+.envelope-flap{position:absolute;top:0;left:0;width:100%;height:54%;background:var(--brown);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;backface-visibility:hidden;transition:transform .85s cubic-bezier(.6,0,.4,1);z-index:3;filter:drop-shadow(0 6px 10px rgba(20,14,10,.35))}
 .envelope.opening .envelope-flap{transform:rotateX(180deg)}
 
-.envelope-seal{position:absolute;left:50%;top:calc(54% - 24px);transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;
+.envelope-seal{position:absolute;left:50%;top:calc(54% - 25px);transform:translate(-50%,-50%);width:52px;height:52px;
+  border-radius:42% 58% 47% 53% / 53% 42% 58% 47%;
   background:
     radial-gradient(circle at 32% 26%,rgba(255,255,255,.4),transparent 42%),
     radial-gradient(circle at 68% 74%,rgba(0,0,0,.3),transparent 55%),
     radial-gradient(circle at 50% 50%,#c79a52,#93672f 68%,#6f4d24 100%);
   box-shadow:0 4px 10px rgba(20,14,10,.45),inset 0 1px 2px rgba(255,255,255,.35),inset 0 -3px 5px rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.18);
   z-index:4;display:flex;align-items:center;justify-content:center;
-  font:italic 15px/1 Georgia,serif;color:#2c1c10;letter-spacing:.02em;
+  font:italic 16px/1 Georgia,serif;color:#2c1c10;letter-spacing:.02em;
   text-shadow:0 1px 0 rgba(255,255,255,.3),0 -1px 0 rgba(0,0,0,.35);
   transition:opacity .4s ease,transform .4s ease}
 .envelope.opening .envelope-seal{opacity:0;transform:translate(-50%,-50%) scale(.5)}
 
-.envelope-hint{margin-top:28px;font:600 11px Arial,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--brown);animation:envPulse 1.8s ease-in-out infinite}
-@keyframes envPulse{0%,100%{opacity:.5}50%{opacity:1}}
+.envelope-hint{position:absolute;left:50%;top:calc(54% - 78px);transform:translateX(-50%);
+  background:var(--cream);color:var(--brown);white-space:nowrap;
+  padding:7px 16px;border-radius:16px;
+  font:600 11px Arial,sans-serif;letter-spacing:.06em;
+  box-shadow:0 5px 14px rgba(20,14,10,.22);
+  z-index:5;animation:envPulse 1.8s ease-in-out infinite}
+.envelope-hint::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+  border-width:6px 6px 0;border-style:solid;border-color:var(--cream) transparent transparent}
+.envelope.opening .envelope-hint{opacity:0;transition:opacity .3s ease}
+@keyframes envPulse{0%,100%{opacity:.65}50%{opacity:1}}
 @media(max-width:760px){
-  .envelope-wrap{width:min(280px,82vw)}
+  .envelope-wrap{width:min(300px,86vw)}
+  .envelope-hint{top:calc(54% - 68px);font-size:10px;padding:6px 13px}
 }
 
 @media(max-width:760px){
@@ -149,16 +143,12 @@ body.gate-open{overflow:hidden}
     <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Abrir invitación">
       <div class="envelope-body"></div>
       <div class="envelope-card" id="envelopeCard">
-        <div>
-          <div class="card-orn">✦</div>
-          <div class="card-names">Samuel<small>&amp;</small>Mildred</div>
-          <div class="card-date">30 · Julio · 2027</div>
-        </div>
+        <img src="assets/img/abrazados.jpg" alt="Samuel y Mildred">
       </div>
       <div class="envelope-flap" id="envelopeFlap"></div>
+      <div class="envelope-hint">Toca aquí</div>
       <div class="envelope-seal">S&amp;M</div>
     </div>
-    <div class="envelope-hint">Toca para abrir</div>
   </div>
 </div>
 

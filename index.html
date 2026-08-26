@@ -76,9 +76,10 @@ button:disabled{opacity:.55;cursor:default}
 .music-btn.playing .icon-pause{display:block}
 
 body.gate-open{overflow:hidden}
-.envelope-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--cream);transition:opacity .6s ease}
+.envelope-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background-color:var(--cream);transition:opacity .6s ease;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")}
 .envelope-gate.hide{opacity:0;pointer-events:none}
-.envelope-wrap{width:min(360px,85vw);perspective:1300px;text-align:center}
+.envelope-wrap{width:min(500px,90vw);perspective:1300px;text-align:center}
 .envelope{position:relative;width:100%;aspect-ratio:3/2;transform-style:preserve-3d;cursor:pointer;outline:none}
 
 .envelope-body{position:absolute;inset:0;background:var(--brown);
@@ -120,7 +121,7 @@ body.gate-open{overflow:hidden}
 .envelope.opening .envelope-hint{opacity:0;transition:opacity .3s ease}
 @keyframes envPulse{0%,100%{opacity:.65}50%{opacity:1}}
 @media(max-width:760px){
-  .envelope-wrap{width:min(300px,86vw)}
+  .envelope-wrap{width:min(360px,88vw)}
   .envelope-hint{top:calc(54% - 68px);font-size:10px;padding:6px 13px}
 }
 

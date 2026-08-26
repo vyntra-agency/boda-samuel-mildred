@@ -75,6 +75,28 @@ button:disabled{opacity:.55;cursor:default}
 .music-btn.playing .icon-play{display:none}
 .music-btn.playing .icon-pause{display:block}
 
+body.gate-open{overflow:hidden}
+.envelope-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--cream);transition:opacity .6s ease}
+.envelope-gate.hide{opacity:0;pointer-events:none}
+.envelope-wrap{width:min(320px,80vw);perspective:1200px;text-align:center}
+.envelope{position:relative;width:100%;aspect-ratio:16/10;transform-style:preserve-3d;cursor:pointer;outline:none}
+.envelope-body{position:absolute;inset:0;background:var(--brown);box-shadow:0 24px 55px rgba(36,26,20,.28)}
+.envelope-body::before,.envelope-body::after{content:"";position:absolute;bottom:0;width:0;height:0;border-style:solid}
+.envelope-body::before{left:0;border-width:0 0 100% 50%;border-color:transparent transparent rgba(0,0,0,.14) transparent}
+.envelope-body::after{right:0;border-width:100% 50% 0 0;border-color:transparent transparent transparent rgba(0,0,0,.14)}
+.envelope-card{position:absolute;left:8%;right:8%;top:16%;height:72%;background:var(--paper);border:1px solid var(--line);box-shadow:0 10px 26px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;transition:transform .9s cubic-bezier(.22,1,.36,1) .45s,opacity .5s ease;z-index:2}
+.envelope-card span{font:italic 16px/1.5 Georgia,serif;color:var(--brown)}
+.envelope.opening .envelope-card{transform:translateY(-138%) scale(1.04)}
+.envelope-flap{position:absolute;top:0;left:0;width:100%;height:58%;background:var(--sage);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;backface-visibility:hidden;transition:transform .8s cubic-bezier(.6,0,.4,1);z-index:3}
+.envelope.opening .envelope-flap{transform:rotateX(180deg)}
+.envelope-seal{position:absolute;left:50%;top:calc(58% - 22px);transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a9793f,#6f4d35);z-index:4;display:flex;align-items:center;justify-content:center;font:italic 13px Georgia,serif;color:#f6ead9;transition:opacity .4s ease,transform .4s ease}
+.envelope.opening .envelope-seal{opacity:0;transform:translate(-50%,-50%) scale(.5)}
+.envelope-hint{margin-top:26px;font:600 11px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--brown);animation:envPulse 1.8s ease-in-out infinite}
+@keyframes envPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@media(max-width:760px){
+  .envelope-wrap{width:min(280px,82vw)}
+}
+
 @media(max-width:760px){
   .hero{min-height:92svh}
   .names{font-size:62px}
@@ -88,7 +110,19 @@ button:disabled{opacity:.55;cursor:default}
 }
 </style>
 </head>
-<body>
+<body class="gate-open">
+<div class="envelope-gate" id="envelopeGate">
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Abrir invitación">
+      <div class="envelope-body"></div>
+      <div class="envelope-card" id="envelopeCard"><span>Samuel<br>&amp;<br>Mildred</span></div>
+      <div class="envelope-flap" id="envelopeFlap"></div>
+      <div class="envelope-seal">S&amp;M</div>
+    </div>
+    <div class="envelope-hint">Toca para abrir</div>
+  </div>
+</div>
+
 <header class="hero" id="inicio">
   <img class="hero-photo" src="assets/img/hero-campo.jpg" alt="Samuel y Mildred en el campo">
   <div class="hero-content">
@@ -235,16 +269,37 @@ musicBtn.addEventListener("click", () => {
   }
 });
 
-// Los navegadores bloquean el autoplay con sonido antes de cualquier interacción
-// del usuario. Intentamos reproducir de inmediato al cargar; si el navegador lo
-// bloquea, arrancamos en el primer toque/clic/scroll — así la música empieza
-// prácticamente al abrir la invitación, sin que nadie tenga que buscar el botón.
-bgm.play().catch(() => {
-  const startOnInteract = () => bgm.play().catch(() => {});
-  ["click", "touchstart", "scroll", "keydown"].forEach(evt => {
-    document.addEventListener(evt, startOnInteract, { once: true, passive: true });
-  });
+// ---- Sobre animado de bienvenida ----
+const envelopeGate = document.getElementById("envelopeGate");
+const envelope = document.getElementById("envelope");
+const envelopeCard = document.getElementById("envelopeCard");
+
+function openEnvelope() {
+  if (envelope.classList.contains("opening")) return;
+  envelope.classList.add("opening");
+  // Tocar el sobre es la primera interacción real del usuario con la página,
+  // así que es el único momento en que el navegador deja arrancar el audio con sonido.
+  bgm.play().catch(() => {});
+}
+
+envelope.addEventListener("click", openEnvelope);
+envelope.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    openEnvelope();
+  }
 });
+
+envelopeCard.addEventListener("transitionend", (e) => {
+  if (e.propertyName !== "transform") return;
+  envelopeGate.classList.add("hide");
+}, { once: true });
+
+envelopeGate.addEventListener("transitionend", (e) => {
+  if (e.target !== envelopeGate || e.propertyName !== "opacity") return;
+  envelopeGate.remove();
+  document.body.classList.remove("gate-open");
+}, { once: true });
 
 // ---- RSVP ----
 const form = document.getElementById("rsvpForm");

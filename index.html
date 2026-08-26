@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1d1712">
+<title>Samuel & Mildred | Western Elegante | 30 de julio de 2027</title>
+<style>
+:root{
+  --ink:#241a14; --cream:#f7f1e8; --paper:#fffaf2; --gold:#b58a4a;
+  --line:#d8c7ad; --brown:#6f4d35; --sage:#596451;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+a{color:inherit}
+.hero{min-height:100svh;position:relative;display:flex;align-items:flex-end;overflow:hidden;background:#211812}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,7,.02),rgba(15,10,7,.08) 48%,rgba(15,10,7,.70) 100%);z-index:1}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:68% center;image-rendering:auto}
+.hero-content{position:relative;z-index:3;width:min(1000px,92%);margin:0 auto;padding:10vh 0 9vh;text-align:center;color:#fff}
+.kicker{font:600 12px/1.4 Arial,sans-serif;letter-spacing:.32em;text-transform:uppercase}
+.names{font-size:clamp(58px,10vw,120px);line-height:.86;font-weight:400;margin:22px 0 18px;text-shadow:0 3px 24px rgba(0,0,0,.35)}
+.names span{font-style:italic;font-size:.52em;display:inline-block;margin:0 .15em}
+.date{font-size:clamp(20px,3vw,31px);letter-spacing:.12em}
+.venue{margin-top:10px;font:500 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.scroll{display:inline-block;margin-top:30px;padding:12px 22px;border:1px solid rgba(255,255,255,.65);border-radius:999px;text-decoration:none;font:600 11px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase}
+.section{padding:78px 20px}
+.inner{width:min(1040px,94%);margin:auto}
+.paper{background:var(--paper);border:1px solid var(--line);box-shadow:0 18px 50px rgba(53,38,25,.08)}
+.intro{text-align:center;padding:62px 24px}
+.eyebrow{font:600 11px Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:var(--brown)}
+h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
+.lead{max-width:700px;margin:0 auto;font-size:20px;line-height:1.7}
+.ornament{color:var(--gold);font-size:28px;margin:15px 0}
+.details{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);margin-top:38px}
+.detail{background:var(--paper);padding:30px 20px;text-align:center}
+.detail strong{display:block;font-size:24px;font-weight:400;margin-bottom:7px}
+.detail small{font:600 10px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--brown)}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:650px;margin:30px auto 0}
+.count{padding:18px 8px;background:#efe6d8;border:1px solid var(--line)}
+.count b{display:block;font-size:34px;font-weight:400}
+.count span{font:600 9px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:250px;gap:12px}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:auto}
+.gallery img:first-child{grid-row:span 2}
+.rsvp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
+.rsvp-copy{padding:48px;background:#2a211b;color:#fff}
+.rsvp-copy h2{margin-top:0}
+form{padding:38px;background:var(--paper);border:1px solid var(--line)}
+label{display:block;font:600 10px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px;color:var(--brown)}
+input,select,textarea{width:100%;padding:14px 12px;margin-bottom:18px;border:1px solid #cbbca7;background:#fffdf9;font:16px Georgia,serif;color:var(--ink);font-family:inherit}
+textarea{resize:vertical;min-height:80px}
+button{width:100%;padding:15px;border:0;background:var(--brown);color:#fff;cursor:pointer;font:600 11px Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+button:disabled{opacity:.55;cursor:default}
+.note{font:13px/1.6 Arial,sans-serif;opacity:.78;margin-top:16px}
+.footer{text-align:center;padding:38px 20px;background:#1d1712;color:#eee9e1;font-size:14px}
+.mini{font:10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+
+.toggle-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.toggle-btn{padding:14px 8px;border:1px solid #cbbca7;background:#fffdf9;font:600 12px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--brown);cursor:pointer;text-align:center}
+.toggle-btn.active{background:var(--brown);border-color:var(--brown);color:#fff}
+.guests-field{overflow:hidden;max-height:100px;transition:max-height .3s ease,margin .3s ease}
+.guests-field.hidden{max-height:0;margin-bottom:0}
+.form-error{display:none;color:#8a2c2c;font:13px/1.5 Arial,sans-serif;margin-bottom:14px}
+.form-error.show{display:block}
+.thanks{display:none;text-align:center;padding:20px 0}
+.thanks.show{display:block}
+.thanks h3{font-size:26px;font-weight:400;margin:0 0 10px}
+.thanks p{font:15px/1.6 Arial,sans-serif;margin:0 0 20px}
+.wa-share{display:inline-block;padding:12px 20px;border:1px solid var(--line);background:transparent;color:var(--ink);text-decoration:none;font:600 11px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+
+.music-btn{position:fixed;right:20px;bottom:20px;z-index:20;width:52px;height:52px;border-radius:50%;background:rgba(29,23,18,.88);border:1px solid rgba(255,255,255,.25);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.music-btn svg{width:18px;height:18px;fill:#fff}
+.music-btn .icon-pause{display:none}
+.music-btn.playing .icon-play{display:none}
+.music-btn.playing .icon-pause{display:block}
+
+@media(max-width:760px){
+  .hero{min-height:92svh}
+  .names{font-size:62px}
+  .details,.rsvp-wrap,.toggle-row{grid-template-columns:1fr}
+  .countdown{grid-template-columns:repeat(2,1fr)}
+  .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:190px}
+  .gallery img:first-child{grid-row:span 2;grid-column:span 2}
+  .rsvp-copy{padding:34px 26px}
+  form{padding:28px 22px}
+  .music-btn{right:14px;bottom:14px;width:46px;height:46px}
+}
+</style>
+</head>
+<body>
+<header class="hero" id="inicio">
+  <img class="hero-photo" src="assets/img/hero-campo.jpg" alt="Samuel y Mildred en el campo">
+  <div class="hero-content">
+    <div class="kicker">Con la bendición de nuestras familias</div>
+    <div class="names">Samuel <span>&amp;</span> Mildred</div>
+    <div class="date">30 · JULIO · 2027</div>
+    <div class="venue">Quinta Paraíso · Salida a Cuauhtémoc</div>
+    <a class="scroll" href="#invitacion">Ver invitación</a>
+  </div>
+</header>
+
+<main>
+<section class="section" id="invitacion">
+  <div class="inner paper intro">
+    <div class="eyebrow">Nuestra boda</div>
+    <div class="ornament">✦</div>
+    <h2>Dos caminos, una historia</h2>
+    <p class="lead">Hay momentos que se quedan para siempre. Queremos compartir uno de los más importantes de nuestra vida contigo.</p>
+    <div class="details">
+      <div class="detail"><small>Fecha</small><strong>30 de julio de 2027</strong><div>Una fecha para celebrar nuestro amor.</div></div>
+      <div class="detail"><small>Lugar</small><strong>Quinta Paraíso</strong><div>Salida a Cuauhtémoc</div></div>
+    </div>
+    <div class="eyebrow" style="margin-top:44px">Faltan</div>
+    <div class="countdown" style="grid-template-columns:1fr;max-width:280px">
+      <div class="count"><b id="days">—</b><span>Días para nuestra boda</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="inner">
+    <div class="eyebrow" style="text-align:center;margin-bottom:18px">Nuestra historia</div>
+    <div class="gallery">
+      <img src="assets/img/campo.jpg" loading="lazy" alt="Samuel y Mildred en el campo">
+      <img src="assets/img/anillo.jpg" loading="lazy" alt="Detalle del anillo">
+      <img src="assets/img/abrazados.jpg" loading="lazy" alt="Samuel y Mildred abrazados">
+      <img src="assets/img/caballo.jpg" loading="lazy" alt="Samuel y Mildred junto al caballo">
+      <img src="assets/img/pareja.jpg" loading="lazy" alt="Samuel y Mildred">
+    </div>
+  </div>
+</section>
+
+<section class="section" id="rsvp" style="padding-top:20px">
+  <div class="inner rsvp-wrap">
+    <div class="rsvp-copy">
+      <div class="eyebrow" style="color:#d8bd8d">Confirmación</div>
+      <h2>¿Nos acompañas?</h2>
+      <p style="font-size:18px;line-height:1.7">Nos hará muy felices compartir este día contigo. Déjanos tus datos para confirmar tu asistencia.</p>
+      <p class="note">Tu respuesta queda registrada al instante para Samuel y Mildred.</p>
+    </div>
+
+    <div>
+      <form id="rsvpForm" class="paper" style="border:1px solid var(--line)">
+        <div class="form-error" id="formError"></div>
+
+        <label>¿Asistirás?</label>
+        <div class="toggle-row">
+          <div class="toggle-btn active" data-asistencia="confirmado">Sí, ahí estaré</div>
+          <div class="toggle-btn" data-asistencia="declinado">No podré ir</div>
+        </div>
+
+        <label for="name">Nombre</label>
+        <input id="name" name="name" required placeholder="Tu nombre">
+
+        <div class="guests-field" id="guestsField">
+          <label for="guests">Número de personas</label>
+          <select id="guests" name="guests">
+            <option value="1">1 persona</option>
+            <option value="2">2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4">4 personas</option>
+            <option value="5">5 personas</option>
+          </select>
+        </div>
+
+        <label for="mensaje">Mensaje para los novios (opcional)</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Déjales unas palabras..."></textarea>
+
+        <button type="submit" id="submitBtn">Confirmar asistencia</button>
+        <div class="note">Tu respuesta se guarda directo, sin necesidad de WhatsApp.</div>
+      </form>
+
+      <div class="thanks paper" id="thanksBox" style="border:1px solid var(--line);padding:38px">
+        <h3 id="thanksTitle">¡Gracias!</h3>
+        <p id="thanksMsg">Ya registramos tu respuesta.</p>
+        <a class="wa-share" id="waShare" href="#" target="_blank" rel="noopener">Avisar también por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="mini">Samuel &amp; Mildred</div>
+  <div style="margin-top:10px">30 de julio de 2027 · Quinta Paraíso</div>
+</footer>
+
+<button class="music-btn" id="musicBtn" type="button" aria-label="Reproducir música">
+  <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+</button>
+<audio id="bgm" src="assets/musica.mp3" loop preload="none"></audio>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+// ==== CONFIGURACIÓN ====
+// 1) Pega aquí los datos del proyecto de Supabase (Settings → API → Project URL / anon public key).
+const SUPABASE_URL = "https://TU-PROYECTO.supabase.co";
+const SUPABASE_ANON_KEY = "TU-ANON-KEY-PUBLICA";
+
+// 2) Cambia únicamente este número por el WhatsApp que recibirá el aviso de confirmación.
+// Formato internacional sin +, espacios ni guiones. Ejemplo: 526141234567
+const WHATSAPP_NUMBER = "526143564520";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ---- Contador regresivo ----
+const weddingDate = new Date("2027-07-30T18:00:00-06:00");
+function updateCountdown(){
+  const now = new Date();
+  let diff = weddingDate - now;
+  if(diff < 0) diff = 0;
+  const d = Math.ceil(diff/86400000);
+  document.getElementById("days").textContent = d;
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+// ---- Botón de música ----
+const musicBtn = document.getElementById("musicBtn");
+const bgm = document.getElementById("bgm");
+musicBtn.addEventListener("click", () => {
+  if (bgm.paused) {
+    bgm.play().then(() => musicBtn.classList.add("playing")).catch(() => {
+      musicBtn.setAttribute("aria-label", "Música no disponible todavía");
+    });
+  } else {
+    bgm.pause();
+    musicBtn.classList.remove("playing");
+  }
+});
+
+// ---- RSVP ----
+const form = document.getElementById("rsvpForm");
+const toggleBtns = document.querySelectorAll(".toggle-btn");
+const guestsField = document.getElementById("guestsField");
+const submitBtn = document.getElementById("submitBtn");
+const formError = document.getElementById("formError");
+const thanksBox = document.getElementById("thanksBox");
+const thanksTitle = document.getElementById("thanksTitle");
+const thanksMsg = document.getElementById("thanksMsg");
+const waShare = document.getElementById("waShare");
+
+let asistencia = "confirmado";
+
+toggleBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    asistencia = btn.dataset.asistencia;
+    toggleBtns.forEach(b => b.classList.toggle("active", b === btn));
+    guestsField.classList.toggle("hidden", asistencia === "declinado");
+    submitBtn.textContent = asistencia === "confirmado" ? "Confirmar asistencia" : "Enviar respuesta";
+  });
+});
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  formError.classList.remove("show");
+
+  const nombre = document.getElementById("name").value.trim();
+  const numInvitados = asistencia === "confirmado" ? Number(document.getElementById("guests").value) : 0;
+  const mensaje = document.getElementById("mensaje").value.trim();
+
+  if (!nombre) {
+    formError.textContent = "Por favor escribe tu nombre.";
+    formError.classList.add("show");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Enviando...";
+
+  const { error } = await supabase.from("invitados").insert({
+    nombre,
+    asistencia,
+    num_invitados: numInvitados,
+    mensaje: mensaje || null
+  });
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = asistencia === "confirmado" ? "Confirmar asistencia" : "Enviar respuesta";
+
+  if (error) {
+    formError.textContent = "No se pudo guardar tu respuesta. Intenta de nuevo en un momento.";
+    formError.classList.add("show");
+    console.error(error);
+    return;
+  }
+
+  form.style.display = "none";
+  thanksBox.classList.add("show");
+
+  if (asistencia === "confirmado") {
+    thanksTitle.textContent = "¡Nos vemos ahí!";
+    thanksMsg.textContent = "Gracias " + nombre + ", ya quedó registrada tu asistencia.";
+  } else {
+    thanksTitle.textContent = "Gracias por avisar";
+    thanksMsg.textContent = "Lamentamos que no puedas acompañarnos, " + nombre + ".";
+  }
+
+  const waMsg = asistencia === "confirmado"
+    ? `Hola Samuel y Mildred. Soy ${nombre}. Confirmo mi asistencia a su boda el 30 de julio de 2027. Seremos ${numInvitados} persona(s).`
+    : `Hola Samuel y Mildred. Soy ${nombre}. Lamentablemente no podré acompañarlos el 30 de julio de 2027.`;
+  waShare.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+});
+</script>
+</body>
+</html>

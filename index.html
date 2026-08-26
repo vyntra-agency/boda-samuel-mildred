@@ -190,7 +190,7 @@ button:disabled{opacity:.55;cursor:default}
   <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
   <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
 </button>
-<audio id="bgm" src="assets/musica.mp3" loop preload="none"></audio>
+<audio id="bgm" src="assets/musica.mp3" loop preload="auto"></audio>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -221,15 +221,29 @@ setInterval(updateCountdown, 60000);
 // ---- Botón de música ----
 const musicBtn = document.getElementById("musicBtn");
 const bgm = document.getElementById("bgm");
+
+bgm.addEventListener("play", () => musicBtn.classList.add("playing"));
+bgm.addEventListener("pause", () => musicBtn.classList.remove("playing"));
+
 musicBtn.addEventListener("click", () => {
   if (bgm.paused) {
-    bgm.play().then(() => musicBtn.classList.add("playing")).catch(() => {
+    bgm.play().catch(() => {
       musicBtn.setAttribute("aria-label", "Música no disponible todavía");
     });
   } else {
     bgm.pause();
-    musicBtn.classList.remove("playing");
   }
+});
+
+// Los navegadores bloquean el autoplay con sonido antes de cualquier interacción
+// del usuario. Intentamos reproducir de inmediato al cargar; si el navegador lo
+// bloquea, arrancamos en el primer toque/clic/scroll — así la música empieza
+// prácticamente al abrir la invitación, sin que nadie tenga que buscar el botón.
+bgm.play().catch(() => {
+  const startOnInteract = () => bgm.play().catch(() => {});
+  ["click", "touchstart", "scroll", "keydown"].forEach(evt => {
+    document.addEventListener(evt, startOnInteract, { once: true, passive: true });
+  });
 });
 
 // ---- RSVP ----

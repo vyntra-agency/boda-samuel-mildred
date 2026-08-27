@@ -43,6 +43,12 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .gallery img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:auto}
 .gallery img:first-child{grid-row:span 2}
 .rsvp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
+.detalles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.detalle-card{padding:34px 26px;border:1px solid var(--line)}
+.detalle-card h3{font-size:20px;font-weight:400;margin:0 0 12px;color:var(--brown)}
+.detalle-card p,.detalle-card li{font:15px/1.6 Arial,sans-serif}
+.detalle-card ul{margin:0;padding-left:18px}
+.detalle-card li{margin-bottom:6px}
 .rsvp-copy{padding:48px;background:#2a211b;color:#fff}
 .rsvp-copy h2{margin-top:0}
 form{padding:38px;background:var(--paper);border:1px solid var(--line)}
@@ -67,6 +73,11 @@ button:disabled{opacity:.55;cursor:default}
 .thanks h3{font-size:26px;font-weight:400;margin:0 0 10px}
 .thanks p{font:15px/1.6 Arial,sans-serif;margin:0 0 20px}
 .wa-share{display:inline-block;padding:12px 20px;border:1px solid var(--line);background:transparent;color:var(--ink);text-decoration:none;font:600 11px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+
+#lookupBox label{margin-top:0}
+.lookup-result{display:block;width:100%;text-align:left;padding:12px 14px;margin-top:10px;border:1px solid #cbbca7;background:#fffdf9;cursor:pointer;font:15px Georgia,serif;color:var(--ink)}
+.lookup-result:hover{background:#f1e6d5}
+.lookup-result small{display:block;font:600 10px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin-top:3px}
 
 .music-btn{position:fixed;right:20px;bottom:20px;z-index:20;width:52px;height:52px;border-radius:50%;background:rgba(29,23,18,.88);border:1px solid rgba(255,255,255,.25);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.28)}
 .music-btn svg{width:18px;height:18px;fill:#fff}
@@ -105,7 +116,7 @@ body.gate-open{overflow:hidden}
 @media(max-width:760px){
   .hero{min-height:92svh}
   .names{font-size:62px}
-  .details,.rsvp-wrap,.toggle-row{grid-template-columns:1fr}
+  .details,.rsvp-wrap,.toggle-row,.detalles-grid{grid-template-columns:1fr}
   .countdown{grid-template-columns:repeat(2,1fr)}
   .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:190px}
   .gallery img:first-child{grid-row:span 2;grid-column:span 2}
@@ -164,6 +175,56 @@ body.gate-open{overflow:hidden}
   </div>
 </section>
 
+<section class="section" style="padding-top:0">
+  <div class="inner">
+    <div class="eyebrow" style="text-align:center;margin-bottom:18px">Cronograma</div>
+    <h2 style="text-align:center">Itinerario del día</h2>
+    <div class="details" style="grid-template-columns:repeat(3,1fr)">
+      <div class="detail"><small>Ceremonia</small><strong>[Hora]</strong></div>
+      <div class="detail"><small>Cóctel</small><strong>[Hora]</strong></div>
+      <div class="detail"><small>Recepción</small><strong>[Hora]</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="inner paper" style="padding:56px 24px;text-align:center">
+    <div class="eyebrow">Con cariño</div>
+    <div class="ornament">✦</div>
+    <h2>Padrinos</h2>
+    <div class="details">
+      <div class="detail"><small>Anillos</small><strong>[Nombre]</strong></div>
+      <div class="detail"><small>Arras</small><strong>[Nombre]</strong></div>
+      <div class="detail"><small>Lazo</small><strong>[Nombre]</strong></div>
+      <div class="detail"><small>Ramo</small><strong>[Nombre]</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="inner">
+    <div class="eyebrow" style="text-align:center;margin-bottom:18px">Para tomar en cuenta</div>
+    <div class="detalles-grid">
+      <div class="detalle-card paper">
+        <h3>Mesa de regalos</h3>
+        <p>[Escribe aquí dónde está su mesa de regalos: Amazon, Liverpool, Sears, cuenta bancaria, etc., y el link si tienen]</p>
+      </div>
+      <div class="detalle-card paper">
+        <h3>Código de vestimenta</h3>
+        <p>[Escribe aquí el código de vestimenta y qué no se vale usar, ej. "Formal — evitar blanco"]</p>
+      </div>
+      <div class="detalle-card paper">
+        <h3>Reglas del evento</h3>
+        <ul>
+          <li>[Regla 1, ej. "Llegar 20 minutos antes"]</li>
+          <li>[Regla 2, ej. "Evento solo para adultos"]</li>
+          <li>[Regla 3, ej. hashtag para fotos #S&amp;M2027]</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="rsvp" style="padding-top:20px">
   <div class="inner rsvp-wrap">
     <div class="rsvp-copy">
@@ -174,7 +235,16 @@ body.gate-open{overflow:hidden}
     </div>
 
     <div>
-      <form id="rsvpForm" class="paper" style="border:1px solid var(--line)">
+      <div class="paper" id="lookupBox" style="border:1px solid var(--line);padding:38px">
+        <label for="lookupInput">Escribe tu nombre o el de tu familia</label>
+        <input id="lookupInput" placeholder="Ej. María López" autocomplete="off">
+        <button type="button" id="lookupBtn">Buscar mi invitación</button>
+        <div id="lookupResults"></div>
+        <div class="form-error" id="lookupError"></div>
+      </div>
+
+      <form id="rsvpForm" class="paper" style="border:1px solid var(--line);display:none">
+        <div class="note" id="lookupSummary" style="margin-top:0;margin-bottom:18px"></div>
         <div class="form-error" id="formError"></div>
 
         <label>¿Asistirás?</label>
@@ -188,13 +258,7 @@ body.gate-open{overflow:hidden}
 
         <div class="guests-field" id="guestsField">
           <label for="guests">Número de personas</label>
-          <select id="guests" name="guests">
-            <option value="1">1 persona</option>
-            <option value="2">2 personas</option>
-            <option value="3">3 personas</option>
-            <option value="4">4 personas</option>
-            <option value="5">5 personas</option>
-          </select>
+          <select id="guests" name="guests"></select>
         </div>
 
         <label for="mensaje">Mensaje para los novios (opcional)</label>
@@ -297,10 +361,18 @@ envelope.addEventListener("keydown", (e) => {
   }
 });
 
-// ---- RSVP ----
+// ---- RSVP: buscar invitado y aplicar su tope de boletos ----
+const lookupBox = document.getElementById("lookupBox");
+const lookupInput = document.getElementById("lookupInput");
+const lookupBtn = document.getElementById("lookupBtn");
+const lookupResults = document.getElementById("lookupResults");
+const lookupError = document.getElementById("lookupError");
+const lookupSummary = document.getElementById("lookupSummary");
+
 const form = document.getElementById("rsvpForm");
 const toggleBtns = document.querySelectorAll(".toggle-btn");
 const guestsField = document.getElementById("guestsField");
+const guestsSelect = document.getElementById("guests");
 const submitBtn = document.getElementById("submitBtn");
 const formError = document.getElementById("formError");
 const thanksBox = document.getElementById("thanksBox");
@@ -309,6 +381,72 @@ const thanksMsg = document.getElementById("thanksMsg");
 const waShare = document.getElementById("waShare");
 
 let asistencia = "confirmado";
+let currentGuest = null; // { id, nombre, pases_maximos }
+
+function buildGuestOptions(max) {
+  guestsSelect.innerHTML = "";
+  for (let i = 1; i <= max; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = i === 1 ? "1 persona" : `${i} personas`;
+    guestsSelect.appendChild(opt);
+  }
+}
+
+function selectGuest(guest) {
+  currentGuest = guest;
+  document.getElementById("name").value = guest.nombre;
+  buildGuestOptions(guest.pases_maximos);
+  lookupSummary.textContent = `Invitación de ${guest.nombre} · hasta ${guest.pases_maximos} persona(s)`;
+  lookupBox.style.display = "none";
+  form.style.display = "block";
+}
+
+async function buscarInvitado(termino) {
+  lookupError.classList.remove("show");
+  lookupResults.innerHTML = "";
+  if (!termino) return;
+
+  const { data, error } = await supabase.rpc("buscar_invitado", { termino });
+  if (error) {
+    lookupError.textContent = "No se pudo buscar. Intenta de nuevo.";
+    lookupError.classList.add("show");
+    console.error(error);
+    return;
+  }
+  if (!data || !data.length) {
+    lookupError.textContent = "No encontramos tu invitación. Escríbele a los novios por WhatsApp para confirmar.";
+    lookupError.classList.add("show");
+    return;
+  }
+
+  data.forEach(guest => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "lookup-result";
+    btn.innerHTML = `${guest.nombre}<small>Hasta ${guest.pases_maximos} persona(s)</small>`;
+    btn.addEventListener("click", () => selectGuest(guest));
+    lookupResults.appendChild(btn);
+  });
+}
+
+lookupBtn.addEventListener("click", () => buscarInvitado(lookupInput.value.trim()));
+lookupInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    buscarInvitado(lookupInput.value.trim());
+  }
+});
+
+// Link personalizado: ?inv=slug carga directo el registro del invitado, sin buscar.
+const invSlug = new URLSearchParams(location.search).get("inv");
+if (invSlug) {
+  supabase.rpc("invitado_por_slug", { p_slug: invSlug }).then(({ data, error }) => {
+    if (!error && data && data.length) {
+      selectGuest(data[0]);
+    }
+  });
+}
 
 toggleBtns.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -340,7 +478,8 @@ form.addEventListener("submit", async (e) => {
     nombre,
     asistencia,
     num_invitados: numInvitados,
-    mensaje: mensaje || null
+    mensaje: mensaje || null,
+    lista_invitado_id: currentGuest ? currentGuest.id : null
   });
 
   submitBtn.disabled = false;

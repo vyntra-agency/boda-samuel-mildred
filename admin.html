@@ -44,8 +44,20 @@ tr:last-child td{border-bottom:0}
 .empty{text-align:center;padding:50px 20px;font:14px/1.6 Arial,sans-serif;color:var(--brown)}
 .table-wrap{overflow-x:auto}
 
+h2{font-size:22px;font-weight:400;margin:0 0 16px}
+.add-guest{display:grid;grid-template-columns:2fr 1fr auto;gap:12px;align-items:end;background:var(--paper);border:1px solid var(--line);padding:22px;margin-bottom:24px}
+.add-guest div{display:flex;flex-direction:column}
+.add-guest label{margin-bottom:6px}
+.add-guest input{margin-bottom:0}
+.add-guest button{white-space:nowrap}
+.link-copy{display:flex;gap:8px;align-items:center}
+.link-copy code{font:11px/1.4 monospace;background:#f1e9db;padding:4px 7px;border-radius:3px;word-break:break-all}
+.link-copy button{padding:6px 10px;font-size:9px}
+.section-gap{margin-top:44px}
+
 @media(max-width:700px){
   .stats{grid-template-columns:1fr}
+  .add-guest{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -83,6 +95,31 @@ tr:last-child td{border-bottom:0}
     <div class="stat"><b id="statDeclinados">0</b><span>No asistirán</span></div>
   </div>
 
+  <h2>Lista de invitados y boletos</h2>
+  <div class="add-guest">
+    <div>
+      <label for="guestName">Nombre o familia</label>
+      <input id="guestName" placeholder="Ej. Familia López">
+    </div>
+    <div>
+      <label for="guestPases">Boletos</label>
+      <input id="guestPases" type="number" min="1" max="20" value="1">
+    </div>
+    <button type="button" id="addGuestBtn">Agregar</button>
+  </div>
+  <div class="error" id="guestListError"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Nombre</th><th>Boletos</th><th>Link personalizado</th><th>Respondió</th></tr>
+      </thead>
+      <tbody id="guestListRows"></tbody>
+    </table>
+    <div class="empty" id="guestListEmpty" style="display:none">Todavía no has agregado a nadie.</div>
+  </div>
+
+  <h2 class="section-gap">Respuestas de RSVP</h2>
   <div class="table-wrap">
     <table>
       <thead>
@@ -163,7 +200,106 @@ async function loadInvitados() {
   currentRows = data || [];
   renderStats(currentRows);
   renderRows(currentRows);
+  await loadGuestList();
 }
+
+// ---- Lista de invitados y su tope de boletos ----
+const SITE_URL = location.origin + location.pathname.replace(/admin\.html$/, "");
+let currentGuestList = [];
+
+function slugify(nombre) {
+  const base = nombre
+    .toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  const suffix = Math.random().toString(36).slice(2, 6);
+  return `${base}-${suffix}`;
+}
+
+async function loadGuestList() {
+  const { data, error } = await supabase
+    .from("lista_invitados")
+    .select("*")
+    .order("nombre");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+  currentGuestList = data || [];
+  renderGuestList(currentGuestList);
+}
+
+function renderGuestList(guests) {
+  const tbody = document.getElementById("guestListRows");
+  const emptyMsg = document.getElementById("guestListEmpty");
+  tbody.innerHTML = "";
+
+  if (!guests.length) {
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+
+  for (const g of guests) {
+    const respondio = currentRows.some(r => r.lista_invitado_id === g.id);
+    const link = `${SITE_URL}?inv=${g.slug}`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${escapeHtml(g.nombre)}</td>
+      <td>${g.pases_maximos}</td>
+      <td><div class="link-copy"><code>${escapeHtml(link)}</code><button type="button" class="ghost copy-link" data-link="${escapeHtml(link)}">Copiar</button></div></td>
+      <td>${respondio ? "Sí" : "—"}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  tbody.querySelectorAll(".copy-link").forEach(btn => {
+    btn.addEventListener("click", () => {
+      navigator.clipboard.writeText(btn.dataset.link).then(() => {
+        btn.textContent = "¡Copiado!";
+        setTimeout(() => { btn.textContent = "Copiar"; }, 1500);
+      });
+    });
+  });
+}
+
+document.getElementById("addGuestBtn").addEventListener("click", async () => {
+  const guestListError = document.getElementById("guestListError");
+  guestListError.classList.remove("show");
+
+  const nombre = document.getElementById("guestName").value.trim();
+  const pases = Number(document.getElementById("guestPases").value);
+
+  if (!nombre) {
+    guestListError.textContent = "Escribe un nombre.";
+    guestListError.classList.add("show");
+    return;
+  }
+  if (!pases || pases < 1 || pases > 20) {
+    guestListError.textContent = "El número de boletos debe ser entre 1 y 20.";
+    guestListError.classList.add("show");
+    return;
+  }
+
+  const { error } = await supabase.from("lista_invitados").insert({
+    nombre,
+    pases_maximos: pases,
+    slug: slugify(nombre)
+  });
+
+  if (error) {
+    guestListError.textContent = "No se pudo agregar. Intenta de nuevo.";
+    guestListError.classList.add("show");
+    console.error(error);
+    return;
+  }
+
+  document.getElementById("guestName").value = "";
+  document.getElementById("guestPases").value = "1";
+  await loadGuestList();
+});
 
 function renderStats(rows) {
   const confirmados = rows.filter(r => r.asistencia === "confirmado");

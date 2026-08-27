@@ -32,6 +32,7 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .lead{max-width:700px;margin:0 auto;font-size:20px;line-height:1.7}
 .ornament{color:var(--gold);font-size:28px;margin:15px 0}
 .details{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);margin-top:38px}
+.details-3col{grid-template-columns:repeat(3,1fr)}
 .detail{background:var(--paper);padding:30px 20px;text-align:center}
 .detail strong{display:block;font-size:24px;font-weight:400;margin-bottom:7px}
 .detail small{font:600 10px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--brown)}
@@ -118,7 +119,7 @@ body.gate-open{overflow:hidden}
 @media(max-width:760px){
   .hero{min-height:92svh}
   .names{font-size:62px}
-  .details,.rsvp-wrap,.toggle-row,.detalles-grid{grid-template-columns:1fr}
+  .details,.details-3col,.rsvp-wrap,.toggle-row,.detalles-grid{grid-template-columns:1fr}
   .countdown{grid-template-columns:repeat(2,1fr)}
   .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:190px}
   .gallery img:first-child{grid-row:span 2;grid-column:span 2}
@@ -184,7 +185,7 @@ body.gate-open{overflow:hidden}
   <div class="inner">
     <div class="eyebrow" style="text-align:center;margin-bottom:18px">Cronograma</div>
     <h2 style="text-align:center">Itinerario del día</h2>
-    <div class="details" style="grid-template-columns:repeat(3,1fr)">
+    <div class="details details-3col">
       <div class="detail"><small>Ceremonia</small><strong>[Hora]</strong></div>
       <div class="detail"><small>Cóctel</small><strong>[Hora]</strong></div>
       <div class="detail"><small>Recepción</small><strong>[Hora]</strong></div>
@@ -197,11 +198,13 @@ body.gate-open{overflow:hidden}
     <div class="eyebrow">Con cariño</div>
     <div class="ornament">✦</div>
     <h2>Padrinos</h2>
-    <div class="details">
-      <div class="detail"><small>Anillos</small><strong>[Nombre]</strong></div>
-      <div class="detail"><small>Arras</small><strong>[Nombre]</strong></div>
-      <div class="detail"><small>Lazo</small><strong>[Nombre]</strong></div>
-      <div class="detail"><small>Ramo</small><strong>[Nombre]</strong></div>
+    <div class="details details-3col">
+      <div class="detail"><small>Velación</small><strong style="font-size:17px;line-height:1.5">Edna Selene Herrera Mancilla<br>Francisco Aarón Muñoz Torres</strong></div>
+      <div class="detail"><small>Lazo</small><strong style="font-size:17px;line-height:1.5">Jazmín Abril Licano Torres<br>José Aarón Meza García</strong></div>
+      <div class="detail"><small>Anillos</small><strong style="font-size:17px;line-height:1.5">Ofelia Torres Montelongo<br>Enrique Licano Torres</strong></div>
+      <div class="detail"><small>Arras</small><strong style="font-size:17px;line-height:1.5">Alejandro Tovar</strong></div>
+      <div class="detail"><small>Biblia</small><strong style="font-size:17px;line-height:1.5">Elizabeth Porras Pérez</strong></div>
+      <div class="detail"><small>Rosario</small><strong style="font-size:17px;line-height:1.5">Nina Elizabeth Muñoz Torres</strong></div>
     </div>
   </div>
 </section>

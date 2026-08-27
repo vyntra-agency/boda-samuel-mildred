@@ -116,7 +116,7 @@ h2{font-size:22px;font-weight:400;margin:0 0 16px}
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Nombre</th><th>Boletos</th><th>Mesa</th><th>Link personalizado</th><th>Respondió</th><th>Entrada</th></tr>
+        <tr><th>Nombre</th><th>Boletos</th><th>Mesa</th><th>Link personalizado</th><th>Respondió</th><th>Entrada</th><th>Pase</th></tr>
       </thead>
       <tbody id="guestListRows"></tbody>
     </table>
@@ -137,12 +137,88 @@ h2{font-size:22px;font-weight:400;margin:0 0 16px}
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import QRCode from "https://esm.sh/qrcode@1.5.3";
+
+const CHECKIN_URL = "https://vyntra-agency.github.io/boda-samuel-mildred/checkin.html";
 
 // Mismos datos de Supabase que index.html (Settings → API).
 const SUPABASE_URL = "https://srhmzhcmrlfituqqhael.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyaG16aGNtcmxmaXR1cXFoYWVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzQwNTcsImV4cCI6MjEwMzM1MDA1N30.FalzafFOzcjWgAFWrM8ZxsB_Avz5n3OzkWR54w4Wub0";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ---- Armar el pase (QR + nombre + mesa) como una sola imagen descargable ----
+function wrapCenteredText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const test = line ? line + " " + word : word;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  lines.push(line);
+  const startY = y - ((lines.length - 1) * lineHeight) / 2;
+  lines.forEach((l, i) => ctx.fillText(l, x, startY + i * lineHeight));
+}
+
+async function buildTicketImage(guest) {
+  const qrValue = `${CHECKIN_URL}?slug=${encodeURIComponent(guest.slug)}`;
+  const qrDataUrl = await QRCode.toDataURL(qrValue, { width: 220, margin: 1 });
+  const qrImg = new Image();
+  await new Promise((resolve, reject) => {
+    qrImg.onload = resolve;
+    qrImg.onerror = reject;
+    qrImg.src = qrDataUrl;
+  });
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 420;
+  canvas.height = 600;
+  const ctx = canvas.getContext("2d");
+  const midX = canvas.width / 2;
+
+  ctx.fillStyle = "#fffdf9";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#d8c7ad";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(12, 12, canvas.width - 24, canvas.height - 24);
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#6f4d35";
+  ctx.font = "600 12px Arial";
+  ctx.fillText("SAMUEL & MILDRED", midX, 60);
+
+  ctx.fillStyle = "#241a14";
+  ctx.font = "italic 30px Georgia";
+  ctx.fillText("Pase de invitado", midX, 105);
+
+  ctx.font = "600 12px Arial";
+  ctx.fillStyle = "#6f4d35";
+  ctx.fillText("30 DE JULIO DE 2027 · QUINTA PARAÍSO", midX, 130);
+
+  ctx.drawImage(qrImg, (canvas.width - 220) / 2, 160, 220, 220);
+
+  ctx.font = "26px Georgia";
+  ctx.fillStyle = "#241a14";
+  wrapCenteredText(ctx, guest.nombre, midX, 430, canvas.width - 60, 32);
+
+  if (guest.mesa) {
+    ctx.font = "600 16px Arial";
+    ctx.fillStyle = "#6f4d35";
+    ctx.fillText(`MESA ${guest.mesa}`, midX, 480);
+  }
+
+  ctx.font = "12px Arial";
+  ctx.fillStyle = "#6f4d35";
+  ctx.fillText("Muestra este pase en la entrada", midX, 555);
+
+  return canvas.toDataURL("image/png");
+}
 
 const loginView = document.getElementById("loginView");
 const panelView = document.getElementById("panelView");
@@ -257,6 +333,7 @@ function renderGuestList(guests) {
       <td><div class="link-copy"><code>${escapeHtml(link)}</code><button type="button" class="ghost copy-link" data-link="${escapeHtml(link)}">Copiar</button></div></td>
       <td>${respondio ? "Sí" : "—"}</td>
       <td>${g.checked_in_at ? "✔ " + new Date(g.checked_in_at).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) : "—"}</td>
+      <td><button type="button" class="ghost download-ticket" data-id="${g.id}">Descargar</button></td>
     `;
     tbody.appendChild(tr);
   }
@@ -267,6 +344,28 @@ function renderGuestList(guests) {
         btn.textContent = "¡Copiado!";
         setTimeout(() => { btn.textContent = "Copiar"; }, 1500);
       });
+    });
+  });
+
+  tbody.querySelectorAll(".download-ticket").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const guest = currentGuestList.find(g => g.id === btn.dataset.id);
+      if (!guest) return;
+      btn.disabled = true;
+      btn.textContent = "Generando...";
+      try {
+        const dataUrl = await buildTicketImage(guest);
+        const a = document.createElement("a");
+        a.href = dataUrl;
+        a.download = `pase-${guest.slug}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (err) {
+        console.error(err);
+      }
+      btn.disabled = false;
+      btn.textContent = "Descargar";
     });
   });
 

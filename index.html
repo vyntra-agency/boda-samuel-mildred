@@ -62,8 +62,10 @@ button:disabled{opacity:.55;cursor:default}
 .mini{font:10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
 
 .toggle-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
-.toggle-btn{padding:14px 8px;border:1px solid #cbbca7;background:#fffdf9;font:600 12px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--brown);cursor:pointer;text-align:center}
-.toggle-btn.active{background:var(--brown);border-color:var(--brown);color:#fff}
+.toggle-btn{position:relative;padding:14px 8px 14px 34px;border:1px solid #cbbca7;background:#fffdf9;font:600 12px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--brown);cursor:pointer;text-align:center}
+.toggle-btn::before{content:"";position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;border:1px solid #cbbca7;border-radius:50%;background:#fff}
+.toggle-btn.active{border-color:var(--gold);background:#fbf3e6;color:var(--ink)}
+.toggle-btn.active::before{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 3px #fbf3e6}
 .guests-field{overflow:hidden;max-height:100px;transition:max-height .3s ease,margin .3s ease}
 .guests-field.hidden{max-height:0;margin-bottom:0}
 .form-error{display:none;color:#8a2c2c;font:13px/1.5 Arial,sans-serif;margin-bottom:14px}
@@ -247,13 +249,13 @@ body.gate-open{overflow:hidden}
         <div class="note" id="lookupSummary" style="margin-top:0;margin-bottom:18px"></div>
         <div class="form-error" id="formError"></div>
 
-        <label>¿Asistirás?</label>
+        <label>Paso 1 — ¿Asistirás?</label>
         <div class="toggle-row">
           <div class="toggle-btn active" data-asistencia="confirmado">Sí, ahí estaré</div>
           <div class="toggle-btn" data-asistencia="declinado">No podré ir</div>
         </div>
 
-        <label for="name">Nombre</label>
+        <label for="name">Paso 2 — Nombre</label>
         <input id="name" name="name" required placeholder="Tu nombre">
 
         <div class="guests-field" id="guestsField">
@@ -264,8 +266,8 @@ body.gate-open{overflow:hidden}
         <label for="mensaje">Mensaje para los novios (opcional)</label>
         <textarea id="mensaje" name="mensaje" placeholder="Déjales unas palabras..."></textarea>
 
-        <button type="submit" id="submitBtn">Confirmar asistencia</button>
-        <div class="note">Tu respuesta se guarda directo, sin necesidad de WhatsApp.</div>
+        <button type="submit" id="submitBtn">Paso 3 — Enviar mi respuesta</button>
+        <div class="note">Tu respuesta no queda guardada hasta que toques este último botón.</div>
       </form>
 
       <div class="thanks paper" id="thanksBox" style="border:1px solid var(--line);padding:38px">
@@ -503,6 +505,12 @@ async function buscarInvitado(termino) {
     return;
   }
 
+  // Un solo resultado claro: entra directo, sin obligar a tocarlo abajo.
+  if (data.length === 1) {
+    selectGuest(data[0]);
+    return;
+  }
+
   data.forEach(guest => {
     const btn = document.createElement("button");
     btn.type = "button";
@@ -536,7 +544,6 @@ toggleBtns.forEach(btn => {
     asistencia = btn.dataset.asistencia;
     toggleBtns.forEach(b => b.classList.toggle("active", b === btn));
     guestsField.classList.toggle("hidden", asistencia === "declinado");
-    submitBtn.textContent = asistencia === "confirmado" ? "Confirmar asistencia" : "Enviar respuesta";
   });
 });
 
@@ -557,16 +564,22 @@ form.addEventListener("submit", async (e) => {
   submitBtn.disabled = true;
   submitBtn.textContent = "Enviando...";
 
-  const { error } = await supabase.from("invitados").insert({
+  const payload = {
     nombre,
     asistencia,
     num_invitados: numInvitados,
     mensaje: mensaje || null,
     lista_invitado_id: currentGuest ? currentGuest.id : null
-  });
+  };
+
+  // Si ya está ligado a un invitado de la lista, un reenvío actualiza esa misma
+  // respuesta en vez de crear otra fila — evita duplicados si alguien confirma dos veces.
+  const { error } = currentGuest
+    ? await supabase.from("invitados").upsert(payload, { onConflict: "lista_invitado_id" })
+    : await supabase.from("invitados").insert(payload);
 
   submitBtn.disabled = false;
-  submitBtn.textContent = asistencia === "confirmado" ? "Confirmar asistencia" : "Enviar respuesta";
+  submitBtn.textContent = "Paso 3 — Enviar mi respuesta";
 
   if (error) {
     formError.textContent = "No se pudo guardar tu respuesta. Intenta de nuevo en un momento.";

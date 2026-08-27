@@ -112,7 +112,7 @@ h2{font-size:22px;font-weight:400;margin:0 0 16px}
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Nombre</th><th>Boletos</th><th>Link personalizado</th><th>Respondió</th><th>Entrada</th><th>Pase</th></tr>
+        <tr><th>Nombre</th><th>Boletos</th><th>Link personalizado</th><th>Respondió</th><th>Entrada</th><th>Pase</th><th></th></tr>
       </thead>
       <tbody id="guestListRows"></tbody>
     </table>
@@ -123,7 +123,7 @@ h2{font-size:22px;font-weight:400;margin:0 0 16px}
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Nombre</th><th>Asistencia</th><th>Personas</th><th>Mensaje</th><th>Fecha</th></tr>
+        <tr><th>Nombre</th><th>Asistencia</th><th>Personas</th><th>Mensaje</th><th>Fecha</th><th></th></tr>
       </thead>
       <tbody id="rows"></tbody>
     </table>
@@ -317,12 +317,13 @@ function renderGuestList(guests) {
     const link = `${SITE_URL}?inv=${g.slug}`;
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${escapeHtml(g.nombre)}</td>
-      <td>${g.pases_maximos}</td>
+      <td><input type="text" class="guest-edit" data-field="nombre" data-id="${g.id}" value="${escapeHtml(g.nombre)}" style="margin:0;padding:8px;min-width:140px"></td>
+      <td><input type="number" class="guest-edit" data-field="pases_maximos" data-id="${g.id}" value="${g.pases_maximos}" min="1" max="20" style="margin:0;padding:8px;width:60px"></td>
       <td><div class="link-copy"><code>${escapeHtml(link)}</code><button type="button" class="ghost copy-link" data-link="${escapeHtml(link)}">Copiar</button></div></td>
       <td>${respondio ? "Sí" : "—"}</td>
       <td>${g.checked_in_at ? "✔ " + new Date(g.checked_in_at).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) : "—"}</td>
       <td><button type="button" class="ghost download-ticket" data-id="${g.id}">Descargar</button></td>
+      <td><button type="button" class="ghost delete-guest" data-id="${g.id}" data-nombre="${escapeHtml(g.nombre)}">Borrar</button></td>
     `;
     tbody.appendChild(tr);
   }
@@ -355,6 +356,52 @@ function renderGuestList(guests) {
       }
       btn.disabled = false;
       btn.textContent = "Descargar";
+    });
+  });
+
+  tbody.querySelectorAll(".guest-edit").forEach(input => {
+    input.addEventListener("change", async () => {
+      const field = input.dataset.field;
+      let value = input.value.trim();
+      if (field === "pases_maximos") {
+        value = Number(value);
+        if (!value || value < 1 || value > 20) {
+          alert("El número de boletos debe ser entre 1 y 20.");
+          await loadGuestList();
+          return;
+        }
+      } else if (!value) {
+        alert("El nombre no puede quedar vacío.");
+        await loadGuestList();
+        return;
+      }
+      const { error } = await supabase
+        .from("lista_invitados")
+        .update({ [field]: value })
+        .eq("id", input.dataset.id);
+      if (error) {
+        console.error(error);
+        alert("No se pudo guardar el cambio.");
+      }
+      await loadGuestList();
+    });
+  });
+
+  tbody.querySelectorAll(".delete-guest").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!confirm(`¿Borrar a "${btn.dataset.nombre}" de la lista? Esto también borra su respuesta de RSVP si ya había confirmado. No se puede deshacer.`)) return;
+      btn.disabled = true;
+      btn.textContent = "Borrando...";
+      await supabase.from("invitados").delete().eq("lista_invitado_id", btn.dataset.id);
+      const { error } = await supabase.from("lista_invitados").delete().eq("id", btn.dataset.id);
+      if (error) {
+        console.error(error);
+        alert("No se pudo borrar.");
+        btn.disabled = false;
+        btn.textContent = "Borrar";
+        return;
+      }
+      await loadInvitados();
     });
   });
 }
@@ -425,9 +472,27 @@ function renderRows(rows) {
       <td>${r.asistencia === "confirmado" ? r.num_invitados : "—"}</td>
       <td>${r.mensaje ? escapeHtml(r.mensaje) : "—"}</td>
       <td>${fecha}</td>
+      <td><button type="button" class="ghost delete-rsvp" data-id="${r.id}" data-nombre="${escapeHtml(r.nombre)}">Borrar</button></td>
     `;
     tbody.appendChild(tr);
   }
+
+  tbody.querySelectorAll(".delete-rsvp").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!confirm(`¿Borrar la respuesta de "${btn.dataset.nombre}"? No se puede deshacer.`)) return;
+      btn.disabled = true;
+      btn.textContent = "Borrando...";
+      const { error } = await supabase.from("invitados").delete().eq("id", btn.dataset.id);
+      if (error) {
+        console.error(error);
+        alert("No se pudo borrar.");
+        btn.disabled = false;
+        btn.textContent = "Borrar";
+        return;
+      }
+      await loadInvitados();
+    });
+  });
 }
 
 function escapeHtml(str) {

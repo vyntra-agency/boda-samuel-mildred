@@ -158,8 +158,11 @@ body.gate-open{overflow:hidden}
       <div class="detail"><small>Lugar</small><strong>Quinta Paraíso</strong><div>Salida a Cuauhtémoc</div></div>
     </div>
     <div class="eyebrow" style="margin-top:44px">Faltan</div>
-    <div class="countdown" style="grid-template-columns:1fr;max-width:280px">
-      <div class="count"><b id="days">—</b><span>Días para nuestra boda</span></div>
+    <div class="countdown">
+      <div class="count"><b id="days">—</b><span>Días</span></div>
+      <div class="count"><b id="hours">—</b><span>Horas</span></div>
+      <div class="count"><b id="minutes">—</b><span>Minutos</span></div>
+      <div class="count"><b id="seconds">—</b><span>Segundos</span></div>
     </div>
   </div>
 </section>
@@ -315,17 +318,23 @@ const WHATSAPP_NUMBER = "526143564520";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ---- Contador regresivo ----
+// ---- Contador regresivo en vivo ----
 const weddingDate = new Date("2027-07-30T18:00:00-06:00");
 function updateCountdown(){
   const now = new Date();
   let diff = weddingDate - now;
   if(diff < 0) diff = 0;
-  const d = Math.ceil(diff/86400000);
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
   document.getElementById("days").textContent = d;
+  document.getElementById("hours").textContent = String(h).padStart(2,"0");
+  document.getElementById("minutes").textContent = String(m).padStart(2,"0");
+  document.getElementById("seconds").textContent = String(s).padStart(2,"0");
 }
 updateCountdown();
-setInterval(updateCountdown, 60000);
+setInterval(updateCountdown, 1000);
 
 // ---- Botón de música ----
 const musicBtn = document.getElementById("musicBtn");

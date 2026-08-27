@@ -461,6 +461,7 @@ const waShare = document.getElementById("waShare");
 
 let asistencia = "confirmado";
 let currentGuest = null; // { id, nombre, pases_maximos }
+let hasPreviousResponse = false;
 
 function buildGuestOptions(max) {
   guestsSelect.innerHTML = "";
@@ -472,13 +473,35 @@ function buildGuestOptions(max) {
   }
 }
 
-function selectGuest(guest) {
+async function selectGuest(guest) {
   currentGuest = guest;
   document.getElementById("name").value = guest.nombre;
   buildGuestOptions(guest.pases_maximos);
   lookupSummary.textContent = `Invitación de ${guest.nombre} · hasta ${guest.pases_maximos} persona(s)`;
   lookupBox.style.display = "none";
   form.style.display = "block";
+
+  const { data } = await supabase.rpc("mi_respuesta_previa", { p_lista_invitado_id: guest.id });
+  const previa = data && data.length ? data[0] : null;
+
+  hasPreviousResponse = !!previa;
+
+  if (previa) {
+    asistencia = previa.asistencia;
+    toggleBtns.forEach(b => b.classList.toggle("active", b.dataset.asistencia === previa.asistencia));
+    guestsField.classList.toggle("hidden", previa.asistencia === "declinado");
+    if (previa.asistencia === "confirmado" && previa.num_invitados) {
+      guestsSelect.value = previa.num_invitados;
+    }
+    if (previa.mensaje) {
+      document.getElementById("mensaje").value = previa.mensaje;
+    }
+    submitBtn.textContent = "Actualizar mi respuesta";
+    const fecha = new Date(previa.created_at).toLocaleDateString("es-MX", { day: "numeric", month: "long" });
+    lookupSummary.textContent = `Ya habías respondido el ${fecha} — puedes actualizar tu respuesta abajo.`;
+  } else {
+    submitBtn.textContent = "Paso 3 — Enviar mi respuesta";
+  }
 }
 
 async function buscarInvitado(termino) {
@@ -573,7 +596,7 @@ form.addEventListener("submit", async (e) => {
     : await supabase.from("invitados").insert(payload);
 
   submitBtn.disabled = false;
-  submitBtn.textContent = "Paso 3 — Enviar mi respuesta";
+  submitBtn.textContent = hasPreviousResponse ? "Actualizar mi respuesta" : "Paso 3 — Enviar mi respuesta";
 
   if (error) {
     formError.textContent = "No se pudo guardar tu respuesta. Intenta de nuevo en un momento.";

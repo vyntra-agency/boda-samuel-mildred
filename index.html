@@ -82,10 +82,12 @@ body.gate-open{overflow:hidden}
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
   background-size:cover,200px 200px}
 .envelope-gate.hide{opacity:0;pointer-events:none}
-.envelope-wrap{position:relative;width:min(620px,92vw);text-align:center;cursor:pointer;outline:none;
+.envelope-wrap{position:relative;width:min(820px,95vw);text-align:center;cursor:pointer;outline:none;
   transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .5s ease}
 .envelope-wrap.opening{transform:scale(1.06);opacity:0}
-.envelope-wrap img{width:100%;display:block;filter:drop-shadow(0 26px 55px rgba(20,12,8,.35))}
+.envelope-wrap img{width:100%;display:block;filter:drop-shadow(0 26px 55px rgba(20,12,8,.35));
+  -webkit-mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,#000 86%,transparent 100%);
+  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,#000 86%,transparent 100%)}
 
 .envelope-hint{position:absolute;left:50%;top:34%;transform:translateX(-50%);
   background:var(--cream);color:var(--brown);white-space:nowrap;
@@ -97,7 +99,7 @@ body.gate-open{overflow:hidden}
   border-width:6px 6px 0;border-style:solid;border-color:var(--cream) transparent transparent}
 @keyframes envPulse{0%,100%{opacity:.65}50%{opacity:1}}
 @media(max-width:760px){
-  .envelope-wrap{width:min(420px,92vw)}
+  .envelope-wrap{width:min(500px,95vw)}
   .envelope-hint{font-size:10px;padding:6px 13px}
 }
 

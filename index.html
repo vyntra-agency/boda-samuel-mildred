@@ -60,6 +60,15 @@ button{width:100%;padding:15px;border:0;background:var(--brown);color:#fff;curso
 button:disabled{opacity:.55;cursor:default}
 .note{font:13px/1.6 Arial,sans-serif;opacity:.78;margin-top:16px}
 .footer{text-align:center;padding:38px 20px;background:#1d1712;color:#eee9e1;font-size:14px}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes heroIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero-content{animation:heroIn 1s cubic-bezier(.22,1,.36,1) .3s both}
+@media(prefers-reduced-motion:reduce){
+  .reveal{transition:none;opacity:1;transform:none}
+  .hero-content{animation:none}
+}
 .mini{font:10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
 
 .toggle-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
@@ -152,14 +161,14 @@ body.gate-open{overflow:hidden}
   <div class="inner paper intro">
     <div class="eyebrow">Nuestra boda</div>
     <div class="ornament">✦</div>
-    <h2>Dos caminos, una historia</h2>
-    <p class="lead">Hay momentos que se quedan para siempre. Queremos compartir uno de los más importantes de nuestra vida contigo.</p>
-    <div class="details">
+    <h2 class="reveal">Dos caminos, una historia</h2>
+    <p class="lead reveal" style="transition-delay:.1s">Hay momentos que se quedan para siempre. Queremos compartir uno de los más importantes de nuestra vida contigo.</p>
+    <div class="details stagger">
       <div class="detail"><small>Fecha</small><strong>30 de julio de 2027</strong><div>Una fecha para celebrar nuestro amor.</div></div>
       <div class="detail"><small>Lugar</small><strong>Quinta Paraíso</strong><div>Salida a Cuauhtémoc</div></div>
     </div>
     <div class="eyebrow" style="margin-top:44px">Faltan</div>
-    <div class="countdown">
+    <div class="countdown stagger">
       <div class="count"><b id="days">—</b><span>Días</span></div>
       <div class="count"><b id="hours">—</b><span>Horas</span></div>
       <div class="count"><b id="minutes">—</b><span>Minutos</span></div>
@@ -171,15 +180,15 @@ body.gate-open{overflow:hidden}
 <section class="section" style="padding-top:0">
   <div class="inner" style="max-width:680px;text-align:center">
     <div class="ornament">✦</div>
-    <p style="font:italic 23px/1.65 Georgia,serif;color:var(--ink)">"De manera que ya no son dos, sino una sola carne. Por tanto, lo que Dios ha unido, que no lo separe el hombre."</p>
-    <div class="eyebrow" style="margin-top:8px">Mateo 19:6</div>
+    <p class="reveal" style="font:italic 23px/1.65 Georgia,serif;color:var(--ink)">"De manera que ya no son dos, sino una sola carne. Por tanto, lo que Dios ha unido, que no lo separe el hombre."</p>
+    <div class="eyebrow reveal" style="margin-top:8px;transition-delay:.15s">Mateo 19:6</div>
   </div>
 </section>
 
 <section class="section" style="padding-top:0">
   <div class="inner">
-    <div class="eyebrow" style="text-align:center;margin-bottom:18px">Nuestra historia</div>
-    <div class="gallery">
+    <div class="eyebrow reveal" style="text-align:center;margin-bottom:18px">Nuestra historia</div>
+    <div class="gallery stagger">
       <img src="assets/img/campo.jpg" loading="lazy" alt="Samuel y Mildred en el campo">
       <img src="assets/img/anillo.jpg" loading="lazy" alt="Detalle del anillo">
       <img src="assets/img/abrazados.jpg" loading="lazy" alt="Samuel y Mildred abrazados">
@@ -192,8 +201,8 @@ body.gate-open{overflow:hidden}
 <section class="section" style="padding-top:0">
   <div class="inner">
     <div class="eyebrow" style="text-align:center;margin-bottom:18px">Cronograma</div>
-    <h2 style="text-align:center">Itinerario del día</h2>
-    <div class="details details-3col">
+    <h2 class="reveal" style="text-align:center">Itinerario del día</h2>
+    <div class="details details-3col stagger">
       <div class="detail"><small>Ceremonia religiosa</small><strong>6:00 p.m.</strong><div>Santuario de Nuestra Señora de Guadalupe</div></div>
       <div class="detail"><small>Cóctel</small><strong>[Hora]</strong></div>
       <div class="detail"><small>Recepción</small><strong>9:00 p.m.</strong><div>Quinta Paraíso</div></div>
@@ -205,8 +214,8 @@ body.gate-open{overflow:hidden}
   <div class="inner paper" style="padding:56px 24px;text-align:center">
     <div class="eyebrow">Con cariño</div>
     <div class="ornament">✦</div>
-    <h2>Padrinos</h2>
-    <div class="details details-3col">
+    <h2 class="reveal">Padrinos</h2>
+    <div class="details details-3col stagger">
       <div class="detail"><small>Velación</small><strong style="font-size:17px;line-height:1.5">Edna Selene Herrera Mancilla<br>Francisco Aarón Muñoz Torres</strong></div>
       <div class="detail"><small>Lazo</small><strong style="font-size:17px;line-height:1.5">Jazmín Abril Licano Torres<br>José Aarón Meza García</strong></div>
       <div class="detail"><small>Anillos</small><strong style="font-size:17px;line-height:1.5">Ofelia Torres Montelongo<br>Enrique Licano Torres</strong></div>
@@ -219,8 +228,8 @@ body.gate-open{overflow:hidden}
 
 <section class="section" style="padding-top:0">
   <div class="inner">
-    <div class="eyebrow" style="text-align:center;margin-bottom:18px">Para tomar en cuenta</div>
-    <div class="detalles-grid">
+    <div class="eyebrow reveal" style="text-align:center;margin-bottom:18px">Para tomar en cuenta</div>
+    <div class="detalles-grid stagger">
       <div class="detalle-card paper">
         <h3>Mesa de regalos</h3>
         <p>[Escribe aquí dónde está su mesa de regalos: Amazon, Liverpool, Sears, cuenta bancaria, etc., y el link si tienen]</p>
@@ -243,14 +252,14 @@ body.gate-open{overflow:hidden}
 
 <section class="section" id="rsvp" style="padding-top:20px">
   <div class="inner rsvp-wrap">
-    <div class="rsvp-copy">
+    <div class="rsvp-copy reveal">
       <div class="eyebrow" style="color:#d8bd8d">Confirmación</div>
       <h2>¿Nos acompañas?</h2>
       <p style="font-size:18px;line-height:1.7">Nos hará muy felices compartir este día contigo. Déjanos tus datos para confirmar tu asistencia.</p>
       <p class="note">Tu respuesta queda registrada al instante para Samuel y Mildred.</p>
     </div>
 
-    <div>
+    <div class="reveal" style="transition-delay:.12s">
       <div class="paper" id="lookupBox" style="border:1px solid var(--line);padding:38px">
         <label for="lookupInput">Escribe tu nombre o el de tu familia</label>
         <input id="lookupInput" placeholder="Ej. María López" autocomplete="off">
@@ -301,8 +310,8 @@ body.gate-open{overflow:hidden}
 </main>
 
 <footer class="footer">
-  <div class="mini">Samuel &amp; Mildred</div>
-  <div style="margin-top:10px">30 de julio de 2027 · Quinta Paraíso</div>
+  <div class="mini reveal">Samuel &amp; Mildred</div>
+  <div class="reveal" style="margin-top:10px;transition-delay:.1s">30 de julio de 2027 · Quinta Paraíso</div>
 </footer>
 
 <button class="music-btn" id="musicBtn" type="button" aria-label="Reproducir música">
@@ -346,6 +355,25 @@ function updateCountdown(){
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
+
+// ---- Animaciones al hacer scroll (fotos y texto aparecen al entrar en pantalla) ----
+document.querySelectorAll(".stagger").forEach(group => {
+  Array.from(group.children).forEach((child, i) => {
+    child.classList.add("reveal");
+    child.style.transitionDelay = `${i * 0.08}s`;
+  });
+});
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
+
+document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 
 // ---- Botón de música ----
 const musicBtn = document.getElementById("musicBtn");

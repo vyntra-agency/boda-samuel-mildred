@@ -272,9 +272,10 @@ body.gate-open{overflow:hidden}
         <h3 id="thanksTitle">¡Gracias!</h3>
         <p id="thanksMsg">Ya registramos tu respuesta.</p>
         <div id="qrBox" style="display:none;margin:24px 0">
-          <p class="note" style="margin-top:0">Este es tu pase — muéstralo en la entrada.</p>
-          <canvas id="qrCanvas"></canvas>
-          <p id="mesaMsg" class="note" style="font-size:16px;font-weight:600;color:var(--ink)"></p>
+          <p class="note" style="margin-top:0">Este es tu pase — guárdalo, lo vas a necesitar en la entrada.</p>
+          <img id="ticketImg" alt="Tu pase de invitado" style="max-width:260px;width:100%;border:1px solid var(--line)">
+          <button type="button" id="downloadTicketBtn" style="margin-top:14px">Descargar mi pase</button>
+          <p class="note">En el celular: mantén presionada la imagen y elige "Guardar" o "Agregar a fotos".</p>
         </div>
         <a class="wa-share" id="waShare" href="#" target="_blank" rel="noopener">Avisar también por WhatsApp</a>
       </div>
@@ -369,6 +370,79 @@ envelope.addEventListener("keydown", (e) => {
     openEnvelope();
   }
 });
+
+// ---- Armar el pase (QR + nombre + mesa) como una sola imagen descargable ----
+function wrapCenteredText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const test = line ? line + " " + word : word;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  lines.push(line);
+  const startY = y - ((lines.length - 1) * lineHeight) / 2;
+  lines.forEach((l, i) => ctx.fillText(l, x, startY + i * lineHeight));
+}
+
+async function buildTicketImage(guest) {
+  const qrValue = `${CHECKIN_URL}?slug=${encodeURIComponent(guest.slug)}`;
+  const qrDataUrl = await QRCode.toDataURL(qrValue, { width: 220, margin: 1 });
+  const qrImg = new Image();
+  await new Promise((resolve, reject) => {
+    qrImg.onload = resolve;
+    qrImg.onerror = reject;
+    qrImg.src = qrDataUrl;
+  });
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 420;
+  canvas.height = 600;
+  const ctx = canvas.getContext("2d");
+  const midX = canvas.width / 2;
+
+  ctx.fillStyle = "#fffdf9";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#d8c7ad";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(12, 12, canvas.width - 24, canvas.height - 24);
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#6f4d35";
+  ctx.font = "600 12px Arial";
+  ctx.fillText("SAMUEL & MILDRED", midX, 60);
+
+  ctx.fillStyle = "#241a14";
+  ctx.font = "italic 30px Georgia";
+  ctx.fillText("Pase de invitado", midX, 105);
+
+  ctx.font = "600 12px Arial";
+  ctx.fillStyle = "#6f4d35";
+  ctx.fillText("30 DE JULIO DE 2027 · QUINTA PARAÍSO", midX, 130);
+
+  ctx.drawImage(qrImg, (canvas.width - 220) / 2, 160, 220, 220);
+
+  ctx.font = "26px Georgia";
+  ctx.fillStyle = "#241a14";
+  wrapCenteredText(ctx, guest.nombre, midX, 430, canvas.width - 60, 32);
+
+  if (guest.mesa) {
+    ctx.font = "600 16px Arial";
+    ctx.fillStyle = "#6f4d35";
+    ctx.fillText(`MESA ${guest.mesa}`, midX, 480);
+  }
+
+  ctx.font = "12px Arial";
+  ctx.fillStyle = "#6f4d35";
+  ctx.fillText("Muestra este pase en la entrada", midX, 555);
+
+  return canvas.toDataURL("image/png");
+}
 
 // ---- RSVP: buscar invitado y aplicar su tope de boletos ----
 const lookupBox = document.getElementById("lookupBox");
@@ -509,14 +583,24 @@ form.addEventListener("submit", async (e) => {
     thanksMsg.textContent = "Gracias " + nombre + ", ya quedó registrada tu asistencia.";
 
     if (currentGuest) {
-      const qrValue = `${CHECKIN_URL}?slug=${encodeURIComponent(currentGuest.slug)}`;
-      const qrCanvas = document.getElementById("qrCanvas");
-      QRCode.toCanvas(qrCanvas, qrValue, { width: 200, margin: 1 }).catch(err => console.error(err));
+      try {
+        const ticketDataUrl = await buildTicketImage(currentGuest);
+        const ticketImg = document.getElementById("ticketImg");
+        ticketImg.src = ticketDataUrl;
 
-      const mesaMsg = document.getElementById("mesaMsg");
-      mesaMsg.textContent = currentGuest.mesa ? `Mesa ${currentGuest.mesa}` : "";
+        document.getElementById("downloadTicketBtn").onclick = () => {
+          const a = document.createElement("a");
+          a.href = ticketDataUrl;
+          a.download = `pase-${currentGuest.slug}.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
 
-      document.getElementById("qrBox").style.display = "block";
+        document.getElementById("qrBox").style.display = "block";
+      } catch (err) {
+        console.error(err);
+      }
     }
   } else {
     thanksTitle.textContent = "Gracias por avisar";

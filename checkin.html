@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1d1712">
+<title>Control de entradas | Samuel & Mildred</title>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<style>
+:root{
+  --ink:#241a14; --cream:#f7f1e8; --paper:#fffaf2; --gold:#b58a4a;
+  --line:#d8c7ad; --brown:#6f4d35;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+.wrap{width:min(560px,94%);margin:0 auto;padding:40px 0 80px}
+h1{font-size:clamp(24px,4vw,32px);font-weight:400;margin:0 0 6px;text-align:center}
+.sub{font:13px/1.6 Arial,sans-serif;color:var(--brown);text-transform:uppercase;letter-spacing:.14em;margin-bottom:30px;text-align:center}
+
+.login-box{max-width:380px;margin:12vh auto;padding:38px;background:var(--paper);border:1px solid var(--line)}
+.login-box h1{font-size:26px}
+label{display:block;font:600 10px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px;color:var(--brown)}
+input{width:100%;padding:13px 12px;margin-bottom:16px;border:1px solid #cbbca7;background:#fffdf9;font:15px Georgia,serif;color:var(--ink)}
+button{padding:13px 20px;border:0;background:var(--brown);color:#fff;cursor:pointer;font:600 11px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;width:100%}
+button:disabled{opacity:.55;cursor:default}
+button.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.error{color:#8a2c2c;font:13px/1.5 Arial,sans-serif;margin-bottom:14px;display:none}
+.error.show{display:block}
+
+.scan-box{background:#111;border:1px solid var(--line);position:relative;aspect-ratio:1;overflow:hidden;margin-bottom:16px}
+.scan-box video{width:100%;height:100%;object-fit:cover}
+.scan-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font:13px Arial,sans-serif;text-align:center;padding:20px;background:rgba(0,0,0,.4)}
+
+.search-row{display:flex;gap:10px;margin-bottom:24px}
+.search-row input{margin-bottom:0}
+.search-row button{width:auto;padding:13px 18px}
+
+.result-card{background:var(--paper);border:1px solid var(--line);padding:30px;text-align:center;margin-bottom:20px}
+.result-card h2{font-size:26px;font-weight:400;margin:0 0 6px}
+.result-card .mesa{font:600 13px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin-bottom:18px}
+.result-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);margin-bottom:20px;border:1px solid var(--line)}
+.result-stat{background:#fffdf9;padding:16px;text-align:center}
+.result-stat b{display:block;font-size:22px;font-weight:400}
+.result-stat span{font:600 9px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--brown)}
+.already{padding:12px;background:#e4ecdf;color:#3d5c33;font:600 12px Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.not-found{padding:20px;background:#f3ded9;color:#8a2c2c;text-align:center;font:14px/1.6 Arial,sans-serif;margin-bottom:20px}
+
+.topbar{display:flex;justify-content:flex-end;margin-bottom:20px}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="loginView" style="display:none">
+  <div class="login-box">
+    <h1>Control de entradas</h1>
+    <form id="loginForm">
+      <div class="error" id="loginError"></div>
+      <label for="email">Correo</label>
+      <input id="email" type="email" required autocomplete="username">
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" required autocomplete="current-password">
+      <button type="submit" id="loginBtn">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<div class="wrap" id="panelView" style="display:none">
+  <div class="topbar">
+    <button class="ghost" id="logoutBtn" style="width:auto">Cerrar sesión</button>
+  </div>
+  <h1>Control de entradas</h1>
+  <div class="sub">Samuel &amp; Mildred · 30 de julio de 2027</div>
+
+  <div class="scan-box" id="scanBox">
+    <video id="video" playsinline muted></video>
+    <div class="scan-hint" id="scanHint">Toca «Activar cámara» para escanear pases</div>
+  </div>
+  <button class="ghost" id="cameraBtn" style="margin-bottom:24px">Activar cámara</button>
+
+  <div class="search-row">
+    <input id="searchInput" placeholder="O busca por nombre">
+    <button type="button" id="searchBtn">Buscar</button>
+  </div>
+
+  <div id="resultArea"></div>
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const SUPABASE_URL = "https://srhmzhcmrlfituqqhael.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyaG16aGNtcmxmaXR1cXFoYWVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzQwNTcsImV4cCI6MjEwMzM1MDA1N30.FalzafFOzcjWgAFWrM8ZxsB_Avz5n3OzkWR54w4Wub0";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const loginView = document.getElementById("loginView");
+const panelView = document.getElementById("panelView");
+const loginForm = document.getElementById("loginForm");
+const loginError = document.getElementById("loginError");
+const loginBtn = document.getElementById("loginBtn");
+const resultArea = document.getElementById("resultArea");
+
+async function showPanelOrLogin() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    loginView.style.display = "none";
+    panelView.style.display = "block";
+    const slug = new URLSearchParams(location.search).get("slug");
+    if (slug) await mostrarInvitado(slug);
+  } else {
+    loginView.style.display = "block";
+    panelView.style.display = "none";
+  }
+}
+
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  loginError.classList.remove("show");
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Entrando...";
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  loginBtn.disabled = false;
+  loginBtn.textContent = "Entrar";
+
+  if (error) {
+    loginError.textContent = "Correo o contraseña incorrectos.";
+    loginError.classList.add("show");
+    return;
+  }
+  await showPanelOrLogin();
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  stopCamera();
+  await supabase.auth.signOut();
+  await showPanelOrLogin();
+});
+
+// ---- Buscar / mostrar invitado ----
+async function mostrarInvitado(slug) {
+  const { data, error } = await supabase.rpc("invitado_staff_por_slug", { p_slug: slug });
+  if (error || !data || !data.length) {
+    renderNotFound();
+    return;
+  }
+  await renderGuest(data[0]);
+}
+
+async function buscarPorNombre(termino) {
+  if (!termino) return;
+  const { data, error } = await supabase.rpc("invitado_staff_buscar", { termino });
+  if (error || !data || !data.length) {
+    renderNotFound();
+    return;
+  }
+  if (data.length === 1) {
+    await renderGuest(data[0]);
+    return;
+  }
+  resultArea.innerHTML = "";
+  data.forEach(g => {
+    const btn = document.createElement("button");
+    btn.className = "ghost";
+    btn.style.marginBottom = "10px";
+    btn.textContent = `${g.nombre} — hasta ${g.pases_maximos} persona(s)`;
+    btn.addEventListener("click", () => renderGuest(g));
+    resultArea.appendChild(btn);
+  });
+}
+
+function renderNotFound() {
+  resultArea.innerHTML = `<div class="not-found">No encontramos esa invitación. Verifica el nombre o el QR.</div>`;
+}
+
+async function renderGuest(guest) {
+  const { data: rsvps } = await supabase
+    .from("invitados")
+    .select("*")
+    .eq("lista_invitado_id", guest.id)
+    .order("created_at", { ascending: false });
+
+  const confirmado = (rsvps || []).find(r => r.asistencia === "confirmado");
+  const confirmadoCount = confirmado ? confirmado.num_invitados : guest.pases_maximos;
+
+  resultArea.innerHTML = `
+    <div class="result-card">
+      <h2>${escapeHtml(guest.nombre)}</h2>
+      <div class="mesa">${guest.mesa ? "Mesa " + escapeHtml(guest.mesa) : "Mesa sin asignar"}</div>
+      ${guest.checked_in_at ? `<div class="already">Ya registró entrada — ${new Date(guest.checked_in_at).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}</div>` : ""}
+      <div class="result-row">
+        <div class="result-stat"><b>${guest.pases_maximos}</b><span>Boletos asignados</span></div>
+        <div class="result-stat"><b>${confirmado ? confirmadoCount : "—"}</b><span>${confirmado ? "Confirmó asistencia" : "No confirmó"}</span></div>
+      </div>
+      <label for="entraronInput">Personas que entran ahora</label>
+      <input id="entraronInput" type="number" min="1" max="${guest.pases_maximos}" value="${guest.personas_entraron || confirmadoCount}">
+      <button type="button" id="registrarBtn">${guest.checked_in_at ? "Actualizar entrada" : "Registrar entrada"}</button>
+    </div>
+  `;
+
+  document.getElementById("registrarBtn").addEventListener("click", async () => {
+    const entraron = Number(document.getElementById("entraronInput").value);
+    const { error } = await supabase
+      .from("lista_invitados")
+      .update({ checked_in_at: new Date().toISOString(), personas_entraron: entraron })
+      .eq("id", guest.id);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+    guest.checked_in_at = new Date().toISOString();
+    guest.personas_entraron = entraron;
+    await renderGuest(guest);
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+document.getElementById("searchBtn").addEventListener("click", () => buscarPorNombre(document.getElementById("searchInput").value.trim()));
+document.getElementById("searchInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    buscarPorNombre(document.getElementById("searchInput").value.trim());
+  }
+});
+
+// ---- Cámara + lectura de QR ----
+const video = document.getElementById("video");
+const scanHint = document.getElementById("scanHint");
+const cameraBtn = document.getElementById("cameraBtn");
+let stream = null;
+let scanning = false;
+let lastResult = "";
+let lastResultAt = 0;
+
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    video.srcObject = stream;
+    await video.play();
+    scanHint.style.display = "none";
+    cameraBtn.textContent = "Apagar cámara";
+    scanning = true;
+    requestAnimationFrame(scanLoop);
+  } catch (err) {
+    scanHint.textContent = "No se pudo abrir la cámara. Usa la búsqueda por nombre.";
+    console.error(err);
+  }
+}
+
+function stopCamera() {
+  scanning = false;
+  if (stream) {
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+  }
+  scanHint.style.display = "flex";
+  scanHint.textContent = "Toca «Activar cámara» para escanear pases";
+  cameraBtn.textContent = "Activar cámara";
+}
+
+cameraBtn.addEventListener("click", () => {
+  if (scanning) stopCamera();
+  else startCamera();
+});
+
+const scanCanvas = document.createElement("canvas");
+const scanCtx = scanCanvas.getContext("2d", { willReadFrequently: true });
+
+function scanLoop() {
+  if (!scanning) return;
+  if (video.readyState === video.HAVE_ENOUGH_DATA) {
+    scanCanvas.width = video.videoWidth;
+    scanCanvas.height = video.videoHeight;
+    scanCtx.drawImage(video, 0, 0, scanCanvas.width, scanCanvas.height);
+    const imageData = scanCtx.getImageData(0, 0, scanCanvas.width, scanCanvas.height);
+    const code = jsQR(imageData.data, imageData.width, imageData.height);
+    if (code && code.data) {
+      const now = Date.now();
+      if (code.data !== lastResult || now - lastResultAt > 4000) {
+        lastResult = code.data;
+        lastResultAt = now;
+        handleScan(code.data);
+      }
+    }
+  }
+  requestAnimationFrame(scanLoop);
+}
+
+function handleScan(text) {
+  let slug = text;
+  try {
+    const url = new URL(text);
+    slug = url.searchParams.get("slug") || text;
+  } catch (e) {
+    // No es una URL, se usa el texto tal cual como slug.
+  }
+  mostrarInvitado(slug);
+}
+
+showPanelOrLogin();
+</script>
+</body>
+</html>

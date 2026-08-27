@@ -271,6 +271,11 @@ body.gate-open{overflow:hidden}
       <div class="thanks paper" id="thanksBox" style="border:1px solid var(--line);padding:38px">
         <h3 id="thanksTitle">¡Gracias!</h3>
         <p id="thanksMsg">Ya registramos tu respuesta.</p>
+        <div id="qrBox" style="display:none;margin:24px 0">
+          <p class="note" style="margin-top:0">Este es tu pase — muéstralo en la entrada.</p>
+          <canvas id="qrCanvas"></canvas>
+          <p id="mesaMsg" class="note" style="font-size:16px;font-weight:600;color:var(--ink)"></p>
+        </div>
         <a class="wa-share" id="waShare" href="#" target="_blank" rel="noopener">Avisar también por WhatsApp</a>
       </div>
     </div>
@@ -291,6 +296,10 @@ body.gate-open{overflow:hidden}
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import QRCode from "https://esm.sh/qrcode@1.5.3";
+
+// URL de la página de control de entradas (para armar el QR del pase).
+const CHECKIN_URL = "https://vyntra-agency.github.io/boda-samuel-mildred/checkin.html";
 
 // ==== CONFIGURACIÓN ====
 // 1) Pega aquí los datos del proyecto de Supabase (Settings → API → Project URL / anon public key).
@@ -498,6 +507,17 @@ form.addEventListener("submit", async (e) => {
   if (asistencia === "confirmado") {
     thanksTitle.textContent = "¡Nos vemos ahí!";
     thanksMsg.textContent = "Gracias " + nombre + ", ya quedó registrada tu asistencia.";
+
+    if (currentGuest) {
+      const qrValue = `${CHECKIN_URL}?slug=${encodeURIComponent(currentGuest.slug)}`;
+      const qrCanvas = document.getElementById("qrCanvas");
+      QRCode.toCanvas(qrCanvas, qrValue, { width: 200, margin: 1 }).catch(err => console.error(err));
+
+      const mesaMsg = document.getElementById("mesaMsg");
+      mesaMsg.textContent = currentGuest.mesa ? `Mesa ${currentGuest.mesa}` : "";
+
+      document.getElementById("qrBox").style.display = "block";
+    }
   } else {
     thanksTitle.textContent = "Gracias por avisar";
     thanksMsg.textContent = "Lamentamos que no puedas acompañarnos, " + nombre + ".";

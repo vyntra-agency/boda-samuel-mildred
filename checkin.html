@@ -37,7 +37,6 @@ button.ghost{background:transparent;border:1px solid var(--line);color:var(--ink
 
 .result-card{background:var(--paper);border:1px solid var(--line);padding:30px;text-align:center;margin-bottom:20px}
 .result-card h2{font-size:26px;font-weight:400;margin:0 0 6px}
-.result-card .mesa{font:600 13px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin-bottom:18px}
 .result-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);margin-bottom:20px;border:1px solid var(--line)}
 .result-stat{background:#fffdf9;padding:16px;text-align:center}
 .result-stat b{display:block;font-size:22px;font-weight:400}
@@ -189,7 +188,6 @@ async function renderGuest(guest) {
   resultArea.innerHTML = `
     <div class="result-card">
       <h2>${escapeHtml(guest.nombre)}</h2>
-      <div class="mesa">${guest.mesa ? "Mesa " + escapeHtml(guest.mesa) : "Mesa sin asignar"}</div>
       ${guest.checked_in_at ? `<div class="already">Ya registró entrada — ${new Date(guest.checked_in_at).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}</div>` : ""}
       <div class="result-row">
         <div class="result-stat"><b>${guest.pases_maximos}</b><span>Boletos asignados</span></div>

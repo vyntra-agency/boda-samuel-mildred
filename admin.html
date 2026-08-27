@@ -45,7 +45,7 @@ tr:last-child td{border-bottom:0}
 .table-wrap{overflow-x:auto}
 
 h2{font-size:22px;font-weight:400;margin:0 0 16px}
-.add-guest{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;align-items:end;background:var(--paper);border:1px solid var(--line);padding:22px;margin-bottom:24px}
+.add-guest{display:grid;grid-template-columns:2fr 1fr auto;gap:12px;align-items:end;background:var(--paper);border:1px solid var(--line);padding:22px;margin-bottom:24px}
 .add-guest div{display:flex;flex-direction:column}
 .add-guest label{margin-bottom:6px}
 .add-guest input{margin-bottom:0}
@@ -105,10 +105,6 @@ h2{font-size:22px;font-weight:400;margin:0 0 16px}
       <label for="guestPases">Boletos</label>
       <input id="guestPases" type="number" min="1" max="20" value="1">
     </div>
-    <div>
-      <label for="guestMesa">Mesa (opcional)</label>
-      <input id="guestMesa" placeholder="Ej. 5">
-    </div>
     <button type="button" id="addGuestBtn">Agregar</button>
   </div>
   <div class="error" id="guestListError"></div>
@@ -116,7 +112,7 @@ h2{font-size:22px;font-weight:400;margin:0 0 16px}
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Nombre</th><th>Boletos</th><th>Mesa</th><th>Link personalizado</th><th>Respondió</th><th>Entrada</th><th>Pase</th></tr>
+        <tr><th>Nombre</th><th>Boletos</th><th>Link personalizado</th><th>Respondió</th><th>Entrada</th><th>Pase</th></tr>
       </thead>
       <tbody id="guestListRows"></tbody>
     </table>
@@ -147,7 +143,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ---- Armar el pase (QR + nombre + mesa) como una sola imagen descargable ----
+// ---- Armar el pase (QR + nombre) como una sola imagen descargable ----
 function wrapCenteredText(ctx, text, x, y, maxWidth, lineHeight) {
   const words = text.split(" ");
   const lines = [];
@@ -205,13 +201,7 @@ async function buildTicketImage(guest) {
 
   ctx.font = "26px Georgia";
   ctx.fillStyle = "#241a14";
-  wrapCenteredText(ctx, guest.nombre, midX, 430, canvas.width - 60, 32);
-
-  if (guest.mesa) {
-    ctx.font = "600 16px Arial";
-    ctx.fillStyle = "#6f4d35";
-    ctx.fillText(`MESA ${guest.mesa}`, midX, 480);
-  }
+  wrapCenteredText(ctx, guest.nombre, midX, 440, canvas.width - 60, 32);
 
   ctx.font = "12px Arial";
   ctx.fillStyle = "#6f4d35";
@@ -329,7 +319,6 @@ function renderGuestList(guests) {
     tr.innerHTML = `
       <td>${escapeHtml(g.nombre)}</td>
       <td>${g.pases_maximos}</td>
-      <td><input type="text" class="mesa-input" data-id="${g.id}" value="${escapeHtml(g.mesa || "")}" placeholder="—" style="width:70px;margin:0;padding:8px"></td>
       <td><div class="link-copy"><code>${escapeHtml(link)}</code><button type="button" class="ghost copy-link" data-link="${escapeHtml(link)}">Copiar</button></div></td>
       <td>${respondio ? "Sí" : "—"}</td>
       <td>${g.checked_in_at ? "✔ " + new Date(g.checked_in_at).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) : "—"}</td>
@@ -368,16 +357,6 @@ function renderGuestList(guests) {
       btn.textContent = "Descargar";
     });
   });
-
-  tbody.querySelectorAll(".mesa-input").forEach(input => {
-    input.addEventListener("change", async () => {
-      const { error } = await supabase
-        .from("lista_invitados")
-        .update({ mesa: input.value.trim() || null })
-        .eq("id", input.dataset.id);
-      if (error) console.error(error);
-    });
-  });
 }
 
 document.getElementById("addGuestBtn").addEventListener("click", async () => {
@@ -386,7 +365,6 @@ document.getElementById("addGuestBtn").addEventListener("click", async () => {
 
   const nombre = document.getElementById("guestName").value.trim();
   const pases = Number(document.getElementById("guestPases").value);
-  const mesa = document.getElementById("guestMesa").value.trim();
 
   if (!nombre) {
     guestListError.textContent = "Escribe un nombre.";
@@ -402,7 +380,6 @@ document.getElementById("addGuestBtn").addEventListener("click", async () => {
   const { error } = await supabase.from("lista_invitados").insert({
     nombre,
     pases_maximos: pases,
-    mesa: mesa || null,
     slug: slugify(nombre)
   });
 
@@ -415,7 +392,6 @@ document.getElementById("addGuestBtn").addEventListener("click", async () => {
 
   document.getElementById("guestName").value = "";
   document.getElementById("guestPases").value = "1";
-  document.getElementById("guestMesa").value = "";
   await loadGuestList();
 });
 

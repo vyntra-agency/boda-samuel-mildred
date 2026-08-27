@@ -373,7 +373,7 @@ envelope.addEventListener("keydown", (e) => {
   }
 });
 
-// ---- Armar el pase (QR + nombre + mesa) como una sola imagen descargable ----
+// ---- Armar el pase (QR + nombre) como una sola imagen descargable ----
 function wrapCenteredText(ctx, text, x, y, maxWidth, lineHeight) {
   const words = text.split(" ");
   const lines = [];
@@ -431,13 +431,7 @@ async function buildTicketImage(guest) {
 
   ctx.font = "26px Georgia";
   ctx.fillStyle = "#241a14";
-  wrapCenteredText(ctx, guest.nombre, midX, 430, canvas.width - 60, 32);
-
-  if (guest.mesa) {
-    ctx.font = "600 16px Arial";
-    ctx.fillStyle = "#6f4d35";
-    ctx.fillText(`MESA ${guest.mesa}`, midX, 480);
-  }
+  wrapCenteredText(ctx, guest.nombre, midX, 440, canvas.width - 60, 32);
 
   ctx.font = "12px Arial";
   ctx.fillStyle = "#6f4d35";

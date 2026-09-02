@@ -70,7 +70,6 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .gallery img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:auto}
 .gallery img:first-child{grid-row:span 2}
 .rsvp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
-.detalles-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
 .color-swatches{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-top:4px}
 .swatch{display:flex;flex-direction:column;align-items:center;gap:8px;font:600 10px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#e4e8da;width:66px}
 .swatch span{display:block;width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.5)}
@@ -162,7 +161,7 @@ body.gate-open{overflow:hidden}
 @media(max-width:760px){
   .hero{min-height:92svh}
   .names{font-size:62px}
-  .details,.details-3col,.rsvp-wrap,.toggle-row,.detalles-grid{grid-template-columns:1fr}
+  .details,.details-3col,.rsvp-wrap,.toggle-row{grid-template-columns:1fr}
   .countdown{grid-template-columns:repeat(2,1fr)}
   .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:190px}
   .gallery img:first-child{grid-row:span 2;grid-column:span 2}
@@ -332,21 +331,15 @@ body.gate-open{overflow:hidden}
 </section>
 
 <section class="section" style="padding-top:0">
-  <div class="inner">
+  <div class="inner" style="max-width:460px">
     <div class="eyebrow reveal" style="text-align:center;margin-bottom:18px">Para tomar en cuenta</div>
-    <div class="detalles-grid stagger">
-      <div class="detalle-card paper">
-        <h3>Mesa de regalos</h3>
-        <p>[Escribe aquí dónde está su mesa de regalos: Amazon, Liverpool, Sears, cuenta bancaria, etc., y el link si tienen]</p>
-      </div>
-      <div class="detalle-card paper">
-        <h3>Reglas del evento</h3>
-        <ul>
-          <li>[Regla 1, ej. "Llegar 20 minutos antes"]</li>
-          <li>[Regla 2, ej. "Evento solo para adultos"]</li>
-          <li>[Regla 3, ej. hashtag para fotos #S&amp;M2027]</li>
-        </ul>
-      </div>
+    <div class="detalle-card paper reveal">
+      <h3>Reglas del evento</h3>
+      <ul>
+        <li>[Regla 1, ej. "Llegar 20 minutos antes"]</li>
+        <li>[Regla 2, ej. "Evento solo para adultos"]</li>
+        <li>[Regla 3, ej. hashtag para fotos #S&amp;M2027]</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -405,6 +398,31 @@ body.gate-open{overflow:hidden}
         </div>
         <a class="wa-share" id="waShare" href="#" target="_blank" rel="noopener">Avisar también por WhatsApp</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner" style="max-width:480px;text-align:center">
+    <svg class="padrino-icon reveal" viewBox="0 0 60 60">
+      <rect x="10" y="24" width="40" height="26" fill="none" stroke="currentColor" stroke-width="2"/>
+      <rect x="6" y="16" width="48" height="10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="30" y1="16" x2="30" y2="50" stroke="currentColor" stroke-width="2"/>
+      <path d="M30 16c-4-9-16-7-13 0 2 4 9 4 13 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M30 16c4-9 16-7 13 0-2 4-9 4-13 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+    <h2 class="reveal script-heading" style="font-size:40px">Mesa de Regalos</h2>
+    <p class="reveal">Su presencia en nuestra boda será el mejor regalo. Pero si desean darnos otro obsequio, les agradeceremos.</p>
+    <a class="map-link reveal" href="https://www.amazon.com.mx/wedding/share/AbSam" target="_blank" rel="noopener">Ir a mesa de regalos ↗</a>
+
+    <div style="margin-top:54px">
+      <svg class="padrino-icon reveal" viewBox="0 0 60 60">
+        <rect x="8" y="16" width="44" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M8 18l22 16 22-16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M30 29c-1.6-2.4-5-2.2-5.2.3-.2 2 1.6 3.6 5.2 5.7 3.6-2.1 5.4-3.7 5.2-5.7-.2-2.5-3.6-2.7-5.2-.3z" fill="currentColor"/>
+      </svg>
+      <h2 class="reveal script-heading" style="font-size:40px">Lluvia de Sobres</h2>
+      <p class="reveal">La lluvia de sobres es la tradición de regalar dinero en efectivo en un sobre el día del evento.</p>
     </div>
   </div>
 </section>

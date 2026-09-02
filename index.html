@@ -78,6 +78,13 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .detalle-card p,.detalle-card li{font:15px/1.6 Arial,sans-serif}
 .detalle-card ul{margin:0;padding-left:18px}
 .detalle-card li{margin-bottom:6px}
+
+.reglas-card{position:relative;padding:50px 40px}
+.reglas-card::before{content:"";position:absolute;inset:10px;border:1px solid var(--line);pointer-events:none}
+.reglas-list{list-style:none;margin:0;padding:0;counter-reset:regla}
+.reglas-list li{counter-increment:regla;text-align:center;font:17px/1.7 Georgia,serif;color:var(--ink);margin-bottom:20px}
+.reglas-list li:last-child{margin-bottom:0}
+.reglas-list li::before{content:counter(regla) ".- "}
 .rsvp-copy{padding:48px;background:var(--sage);color:#fff}
 .rsvp-copy h2{margin-top:0}
 form{padding:38px;background:var(--paper);border:1px solid var(--line)}
@@ -170,6 +177,8 @@ body.gate-open{overflow:hidden}
   .music-btn{right:14px;bottom:14px;width:46px;height:46px}
   .typewriter{font-size:18px;min-height:170px}
   .padrino-item h3{font-size:28px}
+  .reglas-card{padding:38px 22px}
+  .reglas-card::before{inset:8px}
 }
 </style>
 </head>
@@ -331,15 +340,18 @@ body.gate-open{overflow:hidden}
 </section>
 
 <section class="section" style="padding-top:0">
-  <div class="inner" style="max-width:460px">
+  <div class="inner" style="max-width:640px">
     <div class="eyebrow reveal" style="text-align:center;margin-bottom:18px">Para tomar en cuenta</div>
-    <div class="detalle-card paper reveal">
-      <h3>Reglas del evento</h3>
-      <ul>
-        <li>[Regla 1, ej. "Llegar 20 minutos antes"]</li>
-        <li>[Regla 2, ej. "Evento solo para adultos"]</li>
-        <li>[Regla 3, ej. hashtag para fotos #S&amp;M2027]</li>
-      </ul>
+    <div class="reglas-card paper reveal">
+      <h2 class="script-heading" style="font-size:38px;text-align:center;margin-bottom:30px">A Tomar en Cuenta</h2>
+      <ol class="reglas-list">
+        <li>Llegar al menos 20 minutos antes del inicio del evento.</li>
+        <li>Seguir el código de vestimenta especificado en la invitación.</li>
+        <li>Confirmar su asistencia con anticipación, para la correcta organización del evento.</li>
+        <li>Evitar llevar acompañantes no incluidos en la invitación (pases asignados).</li>
+        <li>Seguir las instrucciones del personal del evento (coordinadores, meseros, fotógrafos, etc.).</li>
+        <li>Respetar la hora de cierre del evento.</li>
+      </ol>
     </div>
   </div>
 </section>

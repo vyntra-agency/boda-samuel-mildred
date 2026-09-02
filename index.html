@@ -3,19 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1d1712">
+<meta name="theme-color" content="#252d1a">
 <title>Samuel & Mildred | Western Elegante | 30 de julio de 2027</title>
 <style>
 :root{
-  --ink:#241a14; --cream:#f7f1e8; --paper:#fffaf2; --gold:#b58a4a;
-  --line:#d8c7ad; --brown:#6f4d35; --sage:#596451;
+  --ink:#232c1a; --cream:#f6f4ec; --paper:#fdfbf4; --gold:#8a9868;
+  --line:#d3d8c4; --brown:#55603f; --sage:#252d1a;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+body{margin:0;color:var(--ink);font-family:Georgia,"Times New Roman",serif;
+  background-color:var(--cream);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  background-size:220px 220px}
 a{color:inherit}
-.hero{min-height:100svh;position:relative;display:flex;align-items:flex-end;overflow:hidden;background:#211812}
-.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,7,.02),rgba(15,10,7,.08) 48%,rgba(15,10,7,.70) 100%);z-index:1}
+.hero{min-height:100svh;position:relative;display:flex;align-items:flex-end;overflow:hidden;background:var(--sage)}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,13,.02),rgba(18,22,13,.08) 48%,rgba(18,22,13,.70) 100%);z-index:1}
 .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:68% center;image-rendering:auto}
 .hero-content{position:relative;z-index:3;width:min(1000px,92%);margin:0 auto;padding:10vh 0 9vh;text-align:center;color:#fff}
 .kicker{font:600 12px/1.4 Arial,sans-serif;letter-spacing:.32em;text-transform:uppercase}
@@ -25,7 +28,9 @@ a{color:inherit}
 .venue{margin-top:10px;font:500 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .section{padding:78px 20px}
 .inner{width:min(1040px,94%);margin:auto}
-.paper{background:var(--paper);border:1px solid var(--line);box-shadow:0 18px 50px rgba(53,38,25,.08)}
+.paper{background-color:var(--paper);border:1px solid var(--line);box-shadow:0 18px 50px rgba(37,45,26,.08);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  background-size:200px 200px}
 .intro{text-align:center;padding:62px 24px}
 .eyebrow{font:600 11px Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:var(--brown)}
 h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
@@ -38,7 +43,7 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .detail small{font:600 10px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--brown)}
 .map-link{display:inline-block;margin-top:8px;font:600 10px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px}
 .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:650px;margin:30px auto 0}
-.count{padding:18px 8px;background:#efe6d8;border:1px solid var(--line)}
+.count{padding:18px 8px;background:#e9ecdf;border:1px solid var(--line)}
 .count b{display:block;font-size:34px;font-weight:400}
 .count span{font:600 9px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:250px;gap:12px}
@@ -51,16 +56,16 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .detalle-card p,.detalle-card li{font:15px/1.6 Arial,sans-serif}
 .detalle-card ul{margin:0;padding-left:18px}
 .detalle-card li{margin-bottom:6px}
-.rsvp-copy{padding:48px;background:#2a211b;color:#fff}
+.rsvp-copy{padding:48px;background:var(--sage);color:#fff}
 .rsvp-copy h2{margin-top:0}
 form{padding:38px;background:var(--paper);border:1px solid var(--line)}
 label{display:block;font:600 10px Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px;color:var(--brown)}
-input,select,textarea{width:100%;padding:14px 12px;margin-bottom:18px;border:1px solid #cbbca7;background:#fffdf9;font:16px Georgia,serif;color:var(--ink);font-family:inherit}
+input,select,textarea{width:100%;padding:14px 12px;margin-bottom:18px;border:1px solid var(--line);background:var(--paper);font:16px Georgia,serif;color:var(--ink);font-family:inherit}
 textarea{resize:vertical;min-height:80px}
 button{width:100%;padding:15px;border:0;background:var(--brown);color:#fff;cursor:pointer;font:600 11px Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
 button:disabled{opacity:.55;cursor:default}
 .note{font:13px/1.6 Arial,sans-serif;opacity:.78;margin-top:16px}
-.footer{text-align:center;padding:38px 20px;background:#1d1712;color:#eee9e1;font-size:14px}
+.footer{text-align:center;padding:38px 20px;background:var(--sage);color:#e4e8da;font-size:14px}
 
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -73,10 +78,10 @@ button:disabled{opacity:.55;cursor:default}
 .mini{font:10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
 
 .toggle-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
-.toggle-btn{position:relative;padding:14px 8px 14px 34px;border:1px solid #cbbca7;background:#fffdf9;font:600 12px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--brown);cursor:pointer;text-align:center}
-.toggle-btn::before{content:"";position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;border:1px solid #cbbca7;border-radius:50%;background:#fff}
-.toggle-btn.active{border-color:var(--gold);background:#fbf3e6;color:var(--ink)}
-.toggle-btn.active::before{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 3px #fbf3e6}
+.toggle-btn{position:relative;padding:14px 8px 14px 34px;border:1px solid var(--line);background:var(--paper);font:600 12px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--brown);cursor:pointer;text-align:center}
+.toggle-btn::before{content:"";position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;border:1px solid var(--line);border-radius:50%;background:#fff}
+.toggle-btn.active{border-color:var(--gold);background:#eef1e5;color:var(--ink)}
+.toggle-btn.active::before{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 3px #eef1e5}
 .guests-field{overflow:hidden;max-height:100px;transition:max-height .3s ease,margin .3s ease}
 .guests-field.hidden{max-height:0;margin-bottom:0}
 .form-error{display:none;color:#8a2c2c;font:13px/1.5 Arial,sans-serif;margin-bottom:14px}
@@ -88,8 +93,8 @@ button:disabled{opacity:.55;cursor:default}
 .wa-share{display:inline-block;padding:12px 20px;border:1px solid var(--line);background:transparent;color:var(--ink);text-decoration:none;font:600 11px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}
 
 #lookupBox label{margin-top:0}
-.lookup-result{display:block;width:100%;text-align:left;padding:12px 14px;margin-top:10px;border:1px solid #cbbca7;background:#fffdf9;cursor:pointer;font:15px Georgia,serif;color:var(--ink)}
-.lookup-result:hover{background:#f1e6d5}
+.lookup-result{display:block;width:100%;text-align:left;padding:12px 14px;margin-top:10px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font:15px Georgia,serif;color:var(--ink)}
+.lookup-result:hover{background:#eef1e5}
 .lookup-result small{display:block;font:600 10px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);margin-top:3px}
 
 .music-btn{position:fixed;right:20px;bottom:20px;z-index:20;width:52px;height:52px;border-radius:50%;background:rgba(29,23,18,.88);border:1px solid rgba(255,255,255,.25);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.28)}
@@ -101,7 +106,7 @@ button:disabled{opacity:.55;cursor:default}
 body.gate-open{overflow:hidden}
 .envelope-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background-color:var(--cream);transition:opacity .6s ease;
   background-image:
-    radial-gradient(ellipse at center,rgba(36,26,20,0) 35%,rgba(36,26,20,.08) 100%),
+    radial-gradient(ellipse at center,rgba(30,37,22,0) 35%,rgba(30,37,22,.08) 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
   background-size:cover,200px 200px}
 .envelope-gate.hide{opacity:0;pointer-events:none}
@@ -254,7 +259,7 @@ body.gate-open{overflow:hidden}
 <section class="section" id="rsvp" style="padding-top:20px">
   <div class="inner rsvp-wrap">
     <div class="rsvp-copy reveal">
-      <div class="eyebrow" style="color:#d8bd8d">Confirmación</div>
+      <div class="eyebrow" style="color:#b9c79c">Confirmación</div>
       <h2>¿Nos acompañas?</h2>
       <p style="font-size:18px;line-height:1.7">Nos hará muy felices compartir este día contigo. Déjanos tus datos para confirmar tu asistencia.</p>
       <p class="note">Tu respuesta queda registrada al instante para Samuel y Mildred.</p>
@@ -457,33 +462,33 @@ async function buildTicketImage(guest) {
   const ctx = canvas.getContext("2d");
   const midX = canvas.width / 2;
 
-  ctx.fillStyle = "#fffdf9";
+  ctx.fillStyle = "#fdfbf4";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = "#d8c7ad";
+  ctx.strokeStyle = "#d3d8c4";
   ctx.lineWidth = 2;
   ctx.strokeRect(12, 12, canvas.width - 24, canvas.height - 24);
 
   ctx.textAlign = "center";
-  ctx.fillStyle = "#6f4d35";
+  ctx.fillStyle = "#55603f";
   ctx.font = "600 12px Arial";
   ctx.fillText("SAMUEL & MILDRED", midX, 60);
 
-  ctx.fillStyle = "#241a14";
+  ctx.fillStyle = "#232c1a";
   ctx.font = "italic 30px Georgia";
   ctx.fillText("Pase de invitado", midX, 105);
 
   ctx.font = "600 12px Arial";
-  ctx.fillStyle = "#6f4d35";
+  ctx.fillStyle = "#55603f";
   ctx.fillText("30 DE JULIO DE 2027 · QUINTA PARAÍSO", midX, 130);
 
   ctx.drawImage(qrImg, (canvas.width - 220) / 2, 160, 220, 220);
 
   ctx.font = "26px Georgia";
-  ctx.fillStyle = "#241a14";
+  ctx.fillStyle = "#232c1a";
   wrapCenteredText(ctx, guest.nombre, midX, 440, canvas.width - 60, 32);
 
   ctx.font = "12px Arial";
-  ctx.fillStyle = "#6f4d35";
+  ctx.fillStyle = "#55603f";
   ctx.fillText("Muestra este pase en la entrada", midX, 555);
 
   return canvas.toDataURL("image/png");

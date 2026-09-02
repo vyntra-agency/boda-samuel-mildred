@@ -59,8 +59,9 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .itin-section .script-heading{color:#fff}
 .itin-section h3{font:700 22px Georgia,serif;text-transform:uppercase;letter-spacing:.03em;margin:2px 0 8px;color:#fff}
 .itin-section p{color:#e4e8da}
-.itin-section .map-link{color:#c3cbb0;border-color:#c3cbb0}
-.map-link{display:inline-block;margin-top:8px;font:600 10px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px}
+.itin-section .map-link{background:#fff;color:var(--sage)}
+.map-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:10px 18px;border-radius:999px;background:var(--gold);color:#fff;font:700 11px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;box-shadow:0 5px 14px rgba(37,45,26,.28)}
+.map-link:hover{filter:brightness(1.06)}
 .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:650px;margin:30px auto 0}
 .count{padding:18px 8px;background:#e9ecdf;border:1px solid var(--line)}
 .count b{display:block;font-size:34px;font-weight:400}
@@ -286,11 +287,6 @@ body.gate-open{overflow:hidden}
         <div class="itin-time">6:00 p.m.</div>
         <h3>Ceremonia religiosa</h3>
         <p>Santuario de Nuestra Señora de Guadalupe<br><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Matamoros+2253,+Jardines+del+Santuario,+31206+Chihuahua,+Chih." target="_blank" rel="noopener">Cómo llegar ↗</a></p>
-      </div>
-      <div class="padrino-item">
-        <svg class="padrino-icon" viewBox="0 0 60 60"><path d="M14 16h32l-16 18z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M30 34v14" stroke="currentColor" stroke-width="2"/><path d="M22 48h16" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="14" r="2.5" fill="currentColor"/><path d="M24 14l6-8" stroke="currentColor" stroke-width="1.6"/></svg>
-        <div class="itin-time">[Hora]</div>
-        <h3>Cóctel</h3>
       </div>
       <div class="padrino-item">
         <svg class="padrino-icon" viewBox="0 0 60 60"><path d="M16 12c0 8 3 12 3 12v22h-4v4h14v-4h-4V24s3-4 3-12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M34 12c0 8 3 12 3 12v22h-4v4h14v-4h-4V24s3-4 3-12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>

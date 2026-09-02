@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#252d1a">
 <title>Samuel & Mildred | Western Elegante | 30 de julio de 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#232c1a; --cream:#f6f4ec; --paper:#fdfbf4; --gold:#8a9868;
@@ -41,6 +44,13 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .detail{background:var(--paper);padding:30px 20px;text-align:center}
 .detail strong{display:block;font-size:24px;font-weight:400;margin-bottom:7px}
 .detail small{font:600 10px Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--brown)}
+
+.script-heading{font-family:'Pinyon Script',cursive;font-weight:400;line-height:1}
+.padrino-item{padding:32px 0}
+.padrino-item + .padrino-item{border-top:1px solid var(--line)}
+.padrino-icon{width:52px;height:52px;color:var(--brown);margin-bottom:8px}
+.padrino-item h3{font-size:34px;font-weight:400;margin:2px 0 10px;color:var(--ink)}
+.padrino-item p{font:17px/1.6 Georgia,serif;margin:0;color:var(--ink)}
 .map-link{display:inline-block;margin-top:8px;font:600 10px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px}
 .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:650px;margin:30px auto 0}
 .count{padding:18px 8px;background:#e9ecdf;border:1px solid var(--line)}
@@ -147,6 +157,7 @@ body.gate-open{overflow:hidden}
   form{padding:28px 22px}
   .music-btn{right:14px;bottom:14px;width:46px;height:46px}
   .typewriter{font-size:18px;min-height:170px}
+  .padrino-item h3{font-size:28px}
 }
 </style>
 </head>
@@ -217,6 +228,46 @@ body.gate-open{overflow:hidden}
 </section>
 
 <section class="section" style="padding-top:0">
+  <div class="inner" style="max-width:480px;text-align:center">
+    <div class="eyebrow reveal">Con cariño</div>
+    <h2 class="reveal script-heading" style="font-size:46px">Padrinos</h2>
+
+    <div class="stagger">
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><circle cx="22" cy="34" r="14" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="38" cy="34" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M30 16 L26 23 L34 23 Z" fill="currentColor"/></svg>
+        <h3 class="script-heading">Anillos</h3>
+        <p>Ofelia Torres Montelongo<br>Enrique Licano Torres</p>
+      </div>
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><ellipse cx="30" cy="42" rx="16" ry="6" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="30" cy="34" rx="16" ry="6" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="30" cy="26" rx="16" ry="6" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="30" cy="18" rx="16" ry="6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <h3 class="script-heading">Arras</h3>
+        <p>Alejandro Tovar</p>
+      </div>
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><path d="M 10,30 C 10,18 22,18 30,30 C 38,42 50,42 50,30 C 50,18 38,18 30,30 C 22,42 10,42 10,30 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <h3 class="script-heading">Lazo</h3>
+        <p>Jazmín Abril Licano Torres<br>José Aarón Meza García</p>
+      </div>
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><path d="M30 18v26" stroke="currentColor" stroke-width="2"/><path d="M12 20c6-3 13-1 18 3v24c-5-4-12-6-18-3V20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M48 20c-6-3-13-1-18 3v24c5-4 12-6 18-3V20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <h3 class="script-heading">Biblia</h3>
+        <p>Elizabeth Porras Pérez</p>
+      </div>
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><circle cx="30" cy="23" r="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 4.5"/><line x1="30" y1="36" x2="30" y2="47" stroke="currentColor" stroke-width="2"/><line x1="24" y1="41" x2="36" y2="41" stroke="currentColor" stroke-width="2"/></svg>
+        <h3 class="script-heading">Rosario</h3>
+        <p>Nina Elizabeth Muñoz Torres</p>
+      </div>
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><rect x="19" y="26" width="9" height="22" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="32" y="20" width="9" height="28" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M23.5 26c-2.5-3-2.5-6 0-9 2.5 3 2.5 6 0 9z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M36.5 20c-2.5-3-2.5-6 0-9 2.5 3 2.5 6 0 9z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <h3 class="script-heading">Velación</h3>
+        <p>Edna Selene Herrera Mancilla<br>Francisco Aarón Muñoz Torres</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
   <div class="inner">
     <div class="eyebrow" style="text-align:center;margin-bottom:18px">Cronograma</div>
     <h2 class="reveal" style="text-align:center">Itinerario del día</h2>
@@ -224,22 +275,6 @@ body.gate-open{overflow:hidden}
       <div class="detail"><small>Ceremonia religiosa</small><strong>6:00 p.m.</strong><div>Santuario de Nuestra Señora de Guadalupe<br><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Matamoros+2253,+Jardines+del+Santuario,+31206+Chihuahua,+Chih." target="_blank" rel="noopener">Cómo llegar ↗</a></div></div>
       <div class="detail"><small>Cóctel</small><strong>[Hora]</strong></div>
       <div class="detail"><small>Recepción</small><strong>9:00 p.m.</strong><div>Quinta Paraíso<br><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=28.5784373,-106.1443915" target="_blank" rel="noopener">Cómo llegar ↗</a></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0">
-  <div class="inner paper" style="padding:56px 24px;text-align:center">
-    <div class="eyebrow">Con cariño</div>
-    <div class="ornament">✦</div>
-    <h2 class="reveal">Padrinos</h2>
-    <div class="details details-3col stagger">
-      <div class="detail"><small>Velación</small><strong style="font-size:17px;line-height:1.5">Edna Selene Herrera Mancilla<br>Francisco Aarón Muñoz Torres</strong></div>
-      <div class="detail"><small>Lazo</small><strong style="font-size:17px;line-height:1.5">Jazmín Abril Licano Torres<br>José Aarón Meza García</strong></div>
-      <div class="detail"><small>Anillos</small><strong style="font-size:17px;line-height:1.5">Ofelia Torres Montelongo<br>Enrique Licano Torres</strong></div>
-      <div class="detail"><small>Arras</small><strong style="font-size:17px;line-height:1.5">Alejandro Tovar</strong></div>
-      <div class="detail"><small>Biblia</small><strong style="font-size:17px;line-height:1.5">Elizabeth Porras Pérez</strong></div>
-      <div class="detail"><small>Rosario</small><strong style="font-size:17px;line-height:1.5">Nina Elizabeth Muñoz Torres</strong></div>
     </div>
   </div>
 </section>

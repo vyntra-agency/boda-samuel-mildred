@@ -24,11 +24,11 @@ a{color:inherit}
 .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,13,.02),rgba(18,22,13,.08) 48%,rgba(18,22,13,.70) 100%);z-index:1}
 .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:68% center;image-rendering:auto}
 .hero-content{position:relative;z-index:3;width:min(1000px,92%);margin:0 auto;padding:10vh 0 9vh;text-align:center;color:#fff}
-.kicker{font:600 12px/1.4 Arial,sans-serif;letter-spacing:.32em;text-transform:uppercase}
+.kicker{font:italic 17px/1.5 Georgia,serif;letter-spacing:.02em;min-height:1.5em}
 .names{font-size:clamp(58px,10vw,120px);line-height:.86;font-weight:400;margin:22px 0 18px;text-shadow:0 3px 24px rgba(0,0,0,.35)}
 .names span{font-style:italic;font-size:.52em;display:inline-block;margin:0 .15em}
 .date{font-size:clamp(20px,3vw,31px);letter-spacing:.12em}
-.venue{margin-top:10px;font:500 13px/1.5 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.venue{margin-top:10px;font:italic 16px/1.5 Georgia,serif;letter-spacing:.02em;min-height:1.5em}
 .section{padding:78px 20px}
 .inner{width:min(1040px,94%);margin:auto}
 .paper{background-color:var(--paper);border:1px solid var(--line);box-shadow:0 18px 50px rgba(37,45,26,.08);
@@ -194,10 +194,10 @@ body.gate-open{overflow:hidden}
 <header class="hero" id="inicio">
   <img class="hero-photo" src="assets/img/hero-campo.jpg?v=2" alt="Samuel y Mildred en el campo">
   <div class="hero-content">
-    <div class="kicker">Con la bendición de nuestras familias</div>
+    <div class="kicker"><span id="heroKickerText"></span></div>
     <div class="names">Samuel <span>&amp;</span> Mildred</div>
     <div class="date">30 · JULIO · 2027</div>
-    <div class="venue">Quinta Paraíso · Salida a Cuauhtémoc</div>
+    <div class="venue"><span id="heroVenueText"></span></div>
   </div>
 </header>
 
@@ -518,6 +518,36 @@ const quoteObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.4 });
 quoteObserver.observe(introQuote);
+
+// ---- Texto del hero con animación de escritura (kicker y lugar; nombres y fecha quedan fijos) ----
+const heroKickerText = document.getElementById("heroKickerText");
+const heroVenueText = document.getElementById("heroVenueText");
+const HERO_KICKER = "Con la bendición de nuestras familias";
+const HERO_VENUE = "Quinta Paraíso · Salida a Cuauhtémoc";
+
+function typeText(el, text, speed, onDone) {
+  if (prefersReducedMotion) {
+    el.textContent = text;
+    if (onDone) onDone();
+    return;
+  }
+  let i = 0;
+  (function step() {
+    if (i <= text.length) {
+      el.textContent = text.slice(0, i);
+      i++;
+      setTimeout(step, speed);
+    } else if (onDone) {
+      onDone();
+    }
+  })();
+}
+
+setTimeout(() => {
+  typeText(heroKickerText, HERO_KICKER, 28, () => {
+    typeText(heroVenueText, HERO_VENUE, 28);
+  });
+}, 1400);
 
 // ---- Animaciones al hacer scroll (fotos y texto aparecen al entrar en pantalla) ----
 document.querySelectorAll(".stagger").forEach(group => {

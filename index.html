@@ -67,6 +67,11 @@ button:disabled{opacity:.55;cursor:default}
 .note{font:13px/1.6 Arial,sans-serif;opacity:.78;margin-top:16px}
 .footer{text-align:center;padding:38px 20px;background:var(--sage);color:#e4e8da;font-size:14px}
 
+.typewriter{font:italic 22px/1.75 Georgia,serif;color:var(--ink);min-height:130px}
+.cursor{display:inline-block;margin-left:2px;color:var(--gold);animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cursor{animation:none}}
+
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @keyframes heroIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
@@ -141,6 +146,7 @@ body.gate-open{overflow:hidden}
   .rsvp-copy{padding:34px 26px}
   form{padding:28px 22px}
   .music-btn{right:14px;bottom:14px;width:46px;height:46px}
+  .typewriter{font-size:18px;min-height:170px}
 }
 </style>
 </head>
@@ -163,6 +169,12 @@ body.gate-open{overflow:hidden}
 </header>
 
 <main>
+<section class="section" style="padding-bottom:10px">
+  <div class="inner" style="max-width:640px;text-align:center">
+    <p class="typewriter" id="introQuote"><span id="introQuoteText"></span><span class="cursor">|</span></p>
+  </div>
+</section>
+
 <section class="section" id="invitacion">
   <div class="inner paper intro">
     <div class="eyebrow">Nuestra boda</div>
@@ -361,6 +373,37 @@ function updateCountdown(){
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
+
+// ---- Frase con animación de máquina de escribir ----
+const introQuote = document.getElementById("introQuote");
+const introQuoteText = document.getElementById("introQuoteText");
+const INTRO_QUOTE = "Ningún encuentro es casualidad; las almas saben reconocerse.\nY así, entre tantos caminos, la vida hizo que nuestros corazones coincidieran para escribir juntos nuestra historia de amor.";
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function typeIntroQuote() {
+  if (prefersReducedMotion) {
+    introQuoteText.innerHTML = INTRO_QUOTE.replace(/\n/g, "<br>");
+    return;
+  }
+  let i = 0;
+  (function step() {
+    if (i <= INTRO_QUOTE.length) {
+      introQuoteText.innerHTML = INTRO_QUOTE.slice(0, i).replace(/\n/g, "<br>");
+      i++;
+      setTimeout(step, 26);
+    }
+  })();
+}
+
+const quoteObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      typeIntroQuote();
+      quoteObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.4 });
+quoteObserver.observe(introQuote);
 
 // ---- Animaciones al hacer scroll (fotos y texto aparecen al entrar en pantalla) ----
 document.querySelectorAll(".stagger").forEach(group => {

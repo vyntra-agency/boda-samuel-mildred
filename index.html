@@ -51,6 +51,15 @@ h2{font-size:clamp(34px,5vw,54px);font-weight:400;margin:12px 0 18px}
 .padrino-icon{width:52px;height:52px;color:var(--brown);margin-bottom:8px}
 .padrino-item h3{font-size:34px;font-weight:400;margin:2px 0 10px;color:var(--ink)}
 .padrino-item p{font:17px/1.6 Georgia,serif;margin:0;color:var(--ink)}
+
+.itin-section{background:var(--sage);color:#fff}
+.itin-time{font:italic 17px Georgia,serif;color:#c3cbb0;margin-top:2px}
+.itin-section .padrino-item{border-color:rgba(255,255,255,.18)}
+.itin-section .padrino-icon{color:#fff}
+.itin-section .script-heading{color:#fff}
+.itin-section h3{font:700 22px Georgia,serif;text-transform:uppercase;letter-spacing:.03em;margin:2px 0 8px;color:#fff}
+.itin-section p{color:#e4e8da}
+.itin-section .map-link{color:#c3cbb0;border-color:#c3cbb0}
 .map-link{display:inline-block;margin-top:8px;font:600 10px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px}
 .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:650px;margin:30px auto 0}
 .count{padding:18px 8px;background:#e9ecdf;border:1px solid var(--line)}
@@ -267,14 +276,28 @@ body.gate-open{overflow:hidden}
   </div>
 </section>
 
-<section class="section" style="padding-top:0">
-  <div class="inner">
-    <div class="eyebrow" style="text-align:center;margin-bottom:18px">Cronograma</div>
-    <h2 class="reveal" style="text-align:center">Itinerario del día</h2>
-    <div class="details details-3col stagger">
-      <div class="detail"><small>Ceremonia religiosa</small><strong>6:00 p.m.</strong><div>Santuario de Nuestra Señora de Guadalupe<br><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Matamoros+2253,+Jardines+del+Santuario,+31206+Chihuahua,+Chih." target="_blank" rel="noopener">Cómo llegar ↗</a></div></div>
-      <div class="detail"><small>Cóctel</small><strong>[Hora]</strong></div>
-      <div class="detail"><small>Recepción</small><strong>9:00 p.m.</strong><div>Quinta Paraíso<br><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=28.5784373,-106.1443915" target="_blank" rel="noopener">Cómo llegar ↗</a></div></div>
+<section class="section itin-section">
+  <div class="inner" style="max-width:480px;text-align:center">
+    <h2 class="reveal script-heading" style="font-size:46px">Itinerario</h2>
+
+    <div class="stagger">
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><circle cx="22" cy="34" r="14" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="38" cy="34" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M30 16 L26 23 L34 23 Z" fill="currentColor"/></svg>
+        <div class="itin-time">6:00 p.m.</div>
+        <h3>Ceremonia religiosa</h3>
+        <p>Santuario de Nuestra Señora de Guadalupe<br><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Matamoros+2253,+Jardines+del+Santuario,+31206+Chihuahua,+Chih." target="_blank" rel="noopener">Cómo llegar ↗</a></p>
+      </div>
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><path d="M14 16h32l-16 18z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M30 34v14" stroke="currentColor" stroke-width="2"/><path d="M22 48h16" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="14" r="2.5" fill="currentColor"/><path d="M24 14l6-8" stroke="currentColor" stroke-width="1.6"/></svg>
+        <div class="itin-time">[Hora]</div>
+        <h3>Cóctel</h3>
+      </div>
+      <div class="padrino-item">
+        <svg class="padrino-icon" viewBox="0 0 60 60"><path d="M16 12c0 8 3 12 3 12v22h-4v4h14v-4h-4V24s3-4 3-12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M34 12c0 8 3 12 3 12v22h-4v4h14v-4h-4V24s3-4 3-12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <div class="itin-time">9:00 p.m.</div>
+        <h3>Recepción</h3>
+        <p>Quinta Paraíso<br><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=28.5784373,-106.1443915" target="_blank" rel="noopener">Cómo llegar ↗</a></p>
+      </div>
     </div>
   </div>
 </section>
